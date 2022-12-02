@@ -18,7 +18,7 @@ class SyncTheme {
   );
 
   static final AppBarTheme _appBarTheme = AppBarTheme(
-    color: Colors.black,
+    color: const Color(0xff111111),
     elevation: 2,
     brightness: Brightness.dark,
     iconTheme: IconThemeData(color: SyncColor.primarySwatch),

@@ -7,7 +7,7 @@ class SyncColor {
   static const Color primaryColor = Color(0xFF9642EE);
   static const Color hintColor = Color(0xffaaaaaa);
   static const Color unselectedWidgetColor = Color(0xffcccccc);
-  static const Color scaffoldBackgroundColor = Color(0xff0C120C);
+  static const Color scaffoldBackgroundColor = Color(0xff111111);
 }
 
 MaterialColor hexColor2MaterialColor(int hexColor) {
