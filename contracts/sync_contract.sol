@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 contract Sync {
     enum MeetingPlatforms{GOOGLE, ZOOM, HUDDLE01}
 
-    event MeetingScheduled(address proposer, address proposee, uint dateTime, string title, string description);
+    event MeetingScheduled(address guest, address host, uint startTimestamp, uint endTimestamp, string title, string description);
     event EventCreated(string title, uint timeSlot, uint8 meetingPlatformIndex);
 
     address public owner;
@@ -19,7 +19,8 @@ contract Sync {
 
     struct Schedule {
         address host;
-        uint dateTime;
+        uint startTimestamp;
+        uint endTimestamp;
         address[] guests;
         string description;
         string title;
@@ -42,16 +43,16 @@ contract Sync {
         return syncEventsUserMapper[user];
     }
 
-    function scheduleMeeting(string calldata title, string calldata description, uint dateTime, address host) public {
+    function scheduleMeeting(string calldata title, string calldata description, uint startTimestamp, uint endTimestamp, address host) public {
         address[] memory guests = new address[](1);
         guests[0] = msg.sender;
 
-        Schedule memory schedule = Schedule(host,dateTime,guests,description,title);
+        Schedule memory schedule = Schedule(host,startTimestamp,endTimestamp, guests,description,title);
         schedules.push(schedule);
 
         delete syncEventsUserMapper[host];
 
-        emit MeetingScheduled(msg.sender, host, dateTime, title, description);
+        emit MeetingScheduled(msg.sender, host, startTimestamp, endTimestamp, title, description);
     }
 
     function getSchedules(address user) public view returns(Schedule[] memory) {
