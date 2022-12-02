@@ -41,9 +41,9 @@ class _ItemListState<T> extends State<ItemList<T>> {
         children: [
           12.heightBox,
           ListTile(
-            title: widget.title.text.size(20).semiBold.make(),
+            title: widget.title.text.size(24).semiBold.make(),
           ),
-          4.heightBox,
+          8.heightBox,
           Expanded(
             child: ListView.builder(
               itemCount: widget.itemList.length,
@@ -64,7 +64,7 @@ class _ItemListState<T> extends State<ItemList<T>> {
                   },
                   child: widget.itemList[index].title.text
                       .size(16)
-                      .color(Colors.white)
+                      .color(Colors.white.withOpacity(0.8))
                       .make(),
                 ).p8();
               },
