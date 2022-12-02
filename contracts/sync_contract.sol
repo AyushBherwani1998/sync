@@ -16,6 +16,7 @@ contract Sync {
     Schedule[] schedules;
 
     mapping(address => SyncEvent) syncEventsUserMapper;
+    mapping(uint => bool) meetingStateMapper;
 
     struct Schedule {
         address host;
@@ -24,6 +25,11 @@ contract Sync {
         address[] guests;
         string description;
         string title;
+    }
+
+    struct ScheduleWithStatus {
+        Schedule schedule;
+        bool isActive; 
     }
 
     struct SyncEvent {
@@ -49,20 +55,23 @@ contract Sync {
 
         Schedule memory schedule = Schedule(host,startTimestamp,endTimestamp, guests,description,title);
         schedules.push(schedule);
-
-        delete syncEventsUserMapper[host];
-
+        meetingStateMapper[startTimestamp] = true;
         emit MeetingScheduled(msg.sender, host, startTimestamp, endTimestamp, title, description);
     }
 
-    function getSchedules(address user) public view returns(Schedule[] memory) {
+    function deleteScheduledMeeting(uint startTimestamp) public {
+        meetingStateMapper[startTimestamp] = false;
+    }
+
+    function getSchedules(address user) public view returns(ScheduleWithStatus[] memory) {
         uint totalSchedules = schedules.length;
-        Schedule[] memory tempSchedule = new Schedule[](totalSchedules);
+        ScheduleWithStatus[] memory tempSchedule = new ScheduleWithStatus[](totalSchedules);
         uint tempScheduleIndex;
         for(uint i = 0; i < totalSchedules; i++) {
             Schedule memory schedule = schedules[i];
             if(schedule.host == user || isUserPresentInAttendees(schedule.guests, user)) {
-                tempSchedule[tempScheduleIndex] = schedule;
+                bool isScheduleActive = meetingStateMapper[schedule.startTimestamp];
+                tempSchedule[tempScheduleIndex] = ScheduleWithStatus(schedule, isScheduleActive);
                 tempScheduleIndex++;
             }
         }
