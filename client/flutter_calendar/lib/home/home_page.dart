@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/images.dart';
 import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
-import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:web3dart/web3dart.dart';
@@ -39,16 +38,24 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(SyncImage.avatar),
+                    Image.asset(
+                      SyncImage.avatar,
+                    ),
                   ],
                 ),
                 [
-                  "Hi ".text.caption(context).size(22).make(),
+                  "Hi ".text.caption(context).size(24).make(),
                   key.address
                       .toString()
                       .addressAbbreviation
                       .text
-                      .size(22)
+                      .size(24)
+                      .textStyle(
+                        const TextStyle(
+                          decoration: TextDecoration.underline,
+                          decorationStyle: TextDecorationStyle.dotted,
+                        ),
+                      )
                       .make(),
                 ].row(crossAlignment: CrossAxisAlignment.end),
               ],
