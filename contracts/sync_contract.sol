@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 contract Sync {
     enum MeetingPlatforms{GOOGLE, ZOOM, HUDDLE01}
 
-    event MeetingScheduled(address proposer, address proposee, uint dateTime, string title, string description);
+    event MeetingScheduled(address guest, address host, uint dateTime, string title, string description);
     event EventCreated(string title, uint timeSlot, uint8 meetingPlatformIndex);
 
     address public owner;
