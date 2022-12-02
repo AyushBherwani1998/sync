@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/sync_theme.dart';
-import 'package:flutter_calendar/wallet/screen/wallet_create_screen.dart';
+import 'package:flutter_calendar/wallet/screen/wallet_init_screen.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -14,7 +14,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: SyncTheme.themeData,
-      home: const WalletCreateScreen(),
+      home: const WalletInitScreen(),
     );
   }
 }

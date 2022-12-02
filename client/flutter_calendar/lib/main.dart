@@ -11,7 +11,7 @@ void main() async {
 
   await FrontierHive.setupHive();
 
-  await Hive.openBox(AppConstant.privateKeyBox);
+  await Hive.openBox(SyncConstant.privateKeyBox);
   runZonedGuarded(() {
     runApp(const MyApp());
   }, (error, stackTrace) {

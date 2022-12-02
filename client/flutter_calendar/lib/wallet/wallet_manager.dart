@@ -1,18 +1,28 @@
 import 'dart:math'; //used for the random number generator
 
+import 'package:flutter_calendar/constants.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:web3dart/web3dart.dart';
 
 class WalletManager {
-  late EthPrivateKey privateKey;
+  EthPrivateKey? privateKey;
 
-  WalletManager._() {}
-
-  WalletManager.createWallet() {
+  void createWallet() {
     var rng = Random.secure();
     privateKey = EthPrivateKey.createRandom(rng);
+    _savePrivateKey();
   }
 
-  WalletManager.importWalletFromPrivateKey({required String key}) {
+  void importWalletFromPrivateKey({required String key}) {
     privateKey = EthPrivateKey.fromHex(key);
+    _savePrivateKey();
+  }
+
+  _savePrivateKey() {
+    final box = Hive.box(SyncConstant.privateKeyBox);
+    box.put(
+      SyncConstant.privateKeyStorageKey,
+      privateKey,
+    );
   }
 }

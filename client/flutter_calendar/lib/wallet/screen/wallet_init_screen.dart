@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/sync_colors.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
 
-class WalletCreateScreen extends StatefulWidget {
-  const WalletCreateScreen({Key? key}) : super(key: key);
+class WalletInitScreen extends StatefulWidget {
+  const WalletInitScreen({Key? key}) : super(key: key);
 
   @override
-  State<WalletCreateScreen> createState() => _WalletCreateScreenState();
+  State<WalletInitScreen> createState() => _WalletInitScreenState();
 }
 
-class _WalletCreateScreenState extends State<WalletCreateScreen> {
+class _WalletInitScreenState extends State<WalletInitScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
