@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/sync_colors.dart';
-import 'package:flutter_calendar/widgets/item_list.dart';
+import 'package:flutter_calendar/wallet/screen/import_private_key_screen.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -28,21 +28,7 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
           ),
           SyncButton(
             label: "Create new wallet",
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) {
-                  return ItemList<String>(
-                    onItemSelect: (item) {},
-                    itemList: [
-                      Item(title: "Everyday"),
-                      Item(title: "All days except weekends"),
-                      Item(title: "Some days"),
-                    ],
-                    title: "What is your availability?",
-                  );
-                },
-              ));
-            },
+            onTap: () {},
             icon: const Icon(Icons.create),
           ),
           SyncButton(
@@ -53,7 +39,14 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
             ),
             textColor: SyncColor.primaryColor,
             bgColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return const ImportPrivateKeyScreen();
+                }),
+              );
+            },
           ),
           const Divider().p8(),
           SyncButton(

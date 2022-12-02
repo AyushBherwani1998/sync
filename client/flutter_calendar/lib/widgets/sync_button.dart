@@ -24,18 +24,14 @@ class SyncButton extends StatelessWidget {
         Expanded(
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
               backgroundColor: bgColor,
             ),
             onPressed: onTap,
-            icon: icon ??
-                Icon(
-                  Icons.arrow_forward,
-                  color: textColor,
-                ),
+            icon: (icon == null) ? const Offstage() : icon!,
             label: label.text.size(18).color(textColor).make(),
           ),
         ),
