@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/sync_colors.dart';
+import 'package:flutter_calendar/home/home_page.dart';
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
 import 'package:flutter_calendar/widgets/sync_toast.dart';
@@ -63,14 +64,20 @@ class _ImportPrivateKeyScreenState extends State<ImportPrivateKeyScreen>
             const Spacer(),
             SyncButton(
               label: "Import wallet",
-              onTap: () {
+              onTap: () async {
                 if ((formKey.currentState?.validate() ?? false)) {
                   // Create Private Key
-                  WalletManager().importWalletFromPrivateKey(
+                  await WalletManager().importWalletFromPrivateKey(
                     key: privateKeyController.text,
                   );
 
-                  //Navigate to home page
+                  // Navigate to home page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return const HomePage();
+                    }),
+                  );
                 }
               },
             ),
