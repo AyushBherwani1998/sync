@@ -24,7 +24,7 @@ class SyncButton extends StatelessWidget {
         Expanded(
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(24),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
