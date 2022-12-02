@@ -30,16 +30,17 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   bloc: ^8.1.0
+  bot_toast: ^4.0.3
   cached_network_image: ^3.2.3
   cupertino_icons: ^1.0.2
   dartx: ^1.1.0
   device_info_plus: ^8.0.0
   dio: ^4.0.6
   equatable: ^2.0.5
-  font_awesome_flutter: ^10.2.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1
+  font_awesome_flutter: ^10.2.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   http: ^0.13.5
@@ -87,6 +88,5 @@ flutter:
           weight: 700
         - asset: assets/fonts/DegularDemo-Medium.otf
           weight: 400
-  #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

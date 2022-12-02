@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/sync_theme.dart';
 import 'package:flutter_calendar/wallet/screen/wallet_init_screen.dart';
@@ -15,6 +16,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: SyncTheme.themeData,
       home: const WalletInitScreen(),
+      builder: BotToastInit(),
     );
   }
 }
