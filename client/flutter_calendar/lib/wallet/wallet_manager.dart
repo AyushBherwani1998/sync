@@ -7,6 +7,7 @@ import 'package:web3dart/web3dart.dart';
 
 class WalletManager {
   EthPrivateKey? privateKey;
+  final box = Hive.box(SyncConstant.privateKeyBox);
 
   Future<void> createWallet() async {
     var rng = Random.secure();
@@ -27,10 +28,15 @@ class WalletManager {
   }
 
   Future<void> _savePrivateKey() async {
-    final box = Hive.box(SyncConstant.privateKeyBox);
     await box.put(
       SyncConstant.privateKeyStorageKey,
       privateKey!.privateKey,
     );
+  }
+
+  bool isFirstTimeUser() {
+    final isPrivateKeyPresent =
+        box.containsKey(SyncConstant.privateKeyStorageKey);
+    return !isPrivateKeyPresent;
   }
 }
