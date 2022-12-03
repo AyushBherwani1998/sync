@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/home/guest/guest_home_page.dart';
 import 'package:flutter_calendar/home/host/host_home_page.dart';
 import 'package:flutter_calendar/wallet/screen/wallet_init_screen.dart';
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -26,7 +28,7 @@ class _SplashPageState extends State<SplashPage> {
         (_) async {
           final isFirstTimeUser = WalletManager().isFirstTimeUser();
           final url = await checkForShareUri();
-
+          await saveHostAddress(url);
           if (url?.isNotEmpty ?? false) {
             if (isFirstTimeUser) {
               Navigator.pushAndRemoveUntil(
@@ -67,6 +69,12 @@ class _SplashPageState extends State<SplashPage> {
         },
       );
     });
+  }
+
+  saveHostAddress(String? url) {
+    final address = url?.split("=")[1];
+    final box = Hive.box(SyncConstant.hostAddressBox);
+    box.put(SyncConstant.hostAddressKey, address);
   }
 
   Future<String?> checkForShareUri() async {

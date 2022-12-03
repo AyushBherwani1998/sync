@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_calendar/config/sync_colors.dart';
+import 'package:flutter_calendar/constants.dart';
+import 'package:flutter_calendar/home/guest/guest_home_page.dart';
 import 'package:flutter_calendar/home/host/host_home_page.dart';
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
 import 'package:flutter_calendar/widgets/sync_toast.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ImportPrivateKeyScreen extends StatefulWidget {
@@ -19,6 +22,15 @@ class _ImportPrivateKeyScreenState extends State<ImportPrivateKeyScreen>
   final privateKeyController = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey();
+  String? hostAddress;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    hostAddress =
+        Hive.box(SyncConstant.hostAddressBox).get(SyncConstant.hostAddressKey);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +88,15 @@ class _ImportPrivateKeyScreenState extends State<ImportPrivateKeyScreen>
                   );
 
                   // Navigate to home page
+                  // ignore: use_build_context_synchronously
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
-                      return const HostHomePage();
+                      if (hostAddress == null) {
+                        return const HostHomePage();
+                      } else {
+                        return const GuestHomePage();
+                      }
                     }),
                   );
                 }
