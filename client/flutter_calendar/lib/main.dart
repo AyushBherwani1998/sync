@@ -5,8 +5,6 @@ import 'package:flutter_calendar/app.dart';
 import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/data/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:web3auth_flutter/enums.dart';
-import 'package:web3auth_flutter/input.dart';
 import 'package:web3auth_flutter/web3auth_flutter.dart';
 
 
@@ -31,11 +29,11 @@ void main() async {
     redirectUrl = Uri.parse('${SyncConstant.iOSBundleId}://openlogin');
   }
 
-
-  await Web3AuthFlutter.init(Web3AuthOptions(
-    clientId: SyncConstant.web3AuthClient,
-    network: Network.mainnet,
-    redirectUrl: Uri.parse('com.example.flutter_calendar://auth')
-    ));
+await Web3AuthFlutter.init(
+      clientId:SyncConstant.web3AuthClient,
+      network: Network.mainnet,
+      redirectUri: 'https://com.flutter.sync/auth',
+      whiteLabelData: WhiteLabelData(dark: true, name: "Web3Auth"),
+    );
   
 }
