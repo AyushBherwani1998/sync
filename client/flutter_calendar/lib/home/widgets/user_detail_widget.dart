@@ -7,8 +7,11 @@ import 'package:web3dart/web3dart.dart';
 class UserDetailWidget extends StatelessWidget {
   final EthPrivateKey privateKey;
 
+  final VoidCallback onAddressTap;
+
   const UserDetailWidget({
     required this.privateKey,
+    required this.onAddressTap,
     super.key,
   });
 
@@ -25,18 +28,21 @@ class UserDetailWidget extends StatelessWidget {
       ),
       [
         "Hi, ".text.caption(context).size(24).make(),
-        privateKey.address
-            .toString()
-            .addressAbbreviation
-            .text
-            .size(24)
-            .textStyle(
-              const TextStyle(
-                decoration: TextDecoration.underline,
-                decorationStyle: TextDecorationStyle.dotted,
-              ),
-            )
-            .make(),
+        GestureDetector(
+          onTap: onAddressTap,
+          child: privateKey.address
+              .toString()
+              .addressAbbreviation
+              .text
+              .size(24)
+              .textStyle(
+                const TextStyle(
+                  decoration: TextDecoration.underline,
+                  decorationStyle: TextDecorationStyle.dotted,
+                ),
+              )
+              .make(),
+        ),
       ].row(crossAlignment: CrossAxisAlignment.end),
     ].column();
   }

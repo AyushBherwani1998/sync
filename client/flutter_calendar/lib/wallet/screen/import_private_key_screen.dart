@@ -53,7 +53,9 @@ class _ImportPrivateKeyScreenState extends State<ImportPrivateKeyScreen>
             ).p12(),
             8.heightBox,
             TextButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                // TODO(someshubham): Add Paste Callback
+              },
               icon: const Icon(
                 Icons.copy,
                 color: SyncColor.primaryColor,

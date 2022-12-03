@@ -4,4 +4,5 @@ class SyncImage {
   static const _basePath = 'assets/images';
 
   static const String avatar = "$_basePath/avatar.png";
+  static const String availabilitySvg = "$_basePath/availability.svg";
 }
