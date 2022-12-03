@@ -19,15 +19,19 @@ mixin SyncContract {
   static DeployedContract get deployedContract =>
       DeployedContract(contractAbi, contractAddress);
 
-  static Future<MeetingSchedules> fetchSchedules(String address) async {
+  static Future<MeetingSchedules?> fetchSchedules(String address) async {
     final getScheduleEvent = deployedContract.function('getSchedules');
-    final result = await Web3ClientDart.client.call(
-      contract: deployedContract,
-      function: getScheduleEvent,
-      params: [EthereumAddress.fromHex(address)],
-    );
+    try {
+      final result = await Web3ClientDart.client.call(
+        contract: deployedContract,
+        function: getScheduleEvent,
+        params: [EthereumAddress.fromHex(address)],
+      );
 
-    return MeetingSchedules.fromList(result);
+      return MeetingSchedules.fromList(result);
+    } catch (e) {
+      return null;
+    }
   }
 
   static Future<String?> scheduleMeeting({
