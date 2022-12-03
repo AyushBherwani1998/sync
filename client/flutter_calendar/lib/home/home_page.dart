@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_calendar/config/images.dart';
 import 'package:flutter_calendar/constants.dart';
+import 'package:flutter_calendar/data/models/schedule_model.dart';
+import 'package:flutter_calendar/home/widgets/availability_widget.dart';
+import 'package:flutter_calendar/home/widgets/upcoming_widget.dart';
+import 'package:flutter_calendar/home/widgets/user_detail_widget.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -33,31 +37,135 @@ class _HomePageState extends State<HomePage> {
             final key = EthPrivateKey.fromHex(bytesToHex(uintList));
             return Column(
               mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      SyncImage.avatar,
-                    ),
-                  ],
-                ),
-                [
-                  "Hi, ".text.caption(context).size(24).make(),
-                  key.address
-                      .toString()
-                      .addressAbbreviation
-                      .text
-                      .size(24)
-                      .textStyle(
-                        const TextStyle(
-                          decoration: TextDecoration.underline,
-                          decorationStyle: TextDecorationStyle.dotted,
+                UserDetailWidget(
+                  privateKey: key,
+                  onAddressTap: () {
+                    // TODO(someshubham): Add Address Tap Callback
+
+                    showCupertinoModalPopup(
+                      context: context,
+                      builder: (BuildContext context) => CupertinoActionSheet(
+                        //itle: const Text('Choose Options'),
+                        //message: const Text('Your options are '),
+                        actions: <Widget>[
+                          CupertinoActionSheetAction(
+                            child: const Text('Edit Name'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // TODO(someshubham): Go to edit name
+                            },
+                          ),
+                          CupertinoActionSheetAction(
+                            child: const Text('View private key'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // TODO(someshubham): Go to View Private Key
+                            },
+                          ),
+                          CupertinoActionSheetAction(
+                            child: const Text(
+                              'Remove account',
+                              style: TextStyle(
+                                color: Colors.red,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // TODO(someshubham): Clear PK and go to home
+                            },
+                          )
+                        ],
+                        cancelButton: CupertinoActionSheetAction(
+                          isDefaultAction: true,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      )
-                      .make(),
-                ].row(crossAlignment: CrossAxisAlignment.end),
+                      ),
+                    );
+                  },
+                ),
+                16.heightBox,
+                UpcomingWidget(
+                  viewAllTap: () {
+                    // Navigate to view all page
+                  },
+                  onUpcomingTap: () {
+                    //
+                    showCupertinoModalPopup(
+                      context: context,
+                      builder: (BuildContext context) => CupertinoActionSheet(
+                        //itle: const Text('Choose Options'),
+                        //message: const Text('Your options are '),
+                        actions: <Widget>[
+                          CupertinoActionSheetAction(
+                            child: const Text('Join Huddle01'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // TODO(someshubham): Open Huddle Link
+                            },
+                          ),
+                          CupertinoActionSheetAction(
+                            child: const Text('Chat with 0x123...4df3'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // TODO(someshubham): Chat with Host
+                            },
+                          ),
+                          CupertinoActionSheetAction(
+                            child: const Text(
+                              'Cancel Meeting',
+                              style: TextStyle(
+                                color: Colors.red,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              // TODO(someshubham): Cancel Meeting
+                            },
+                          )
+                        ],
+                        cancelButton: CupertinoActionSheetAction(
+                          isDefaultAction: true,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  scheduleModel: ScheduleModel(
+                    address: "0x9878978926",
+                    guests: const ["0x2514654"],
+                    title: "Ayush <> EthFinalist",
+                    description: "7th May   •   9:30 PM   •   30mins",
+                    startTime: DateTime.now(),
+                    endTime: DateTime.now(),
+                  ),
+                ),
+                10.heightBox,
+                AvailabilityWidget(
+                  onAddAvailability: () {
+                    // TODO(someshubham): Add your availability callback
+                  },
+                  onShareAvailability: () {
+                    // TODO(someshubham): Add your Share callback
+                  },
+                ),
               ],
             );
           }),
