@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar/home/guest/meeting_confirmation_page.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -104,7 +105,14 @@ class _MeetingCreationPageState extends State<MeetingCreationPage> {
             ),
             SyncButton(
               label: "Confirm",
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return const MeetingConfirmationPage();
+                  }),
+                );
+              },
             ),
             24.heightBox,
           ],
