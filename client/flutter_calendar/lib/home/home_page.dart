@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/data/models/schedule_model.dart';
+import 'package:flutter_calendar/data/sync_raw_data.dart';
 import 'package:flutter_calendar/home/update_name_page.dart';
 import 'package:flutter_calendar/home/widgets/availability_widget.dart';
 import 'package:flutter_calendar/home/widgets/upcoming_widget.dart';
@@ -177,17 +178,7 @@ class _HomePageState extends State<HomePage> {
                       MaterialPageRoute(
                         builder: (context) {
                           return ItemList<String>(
-                            itemList: [
-                              Item(
-                                title: "Everyday",
-                              ),
-                              Item(
-                                title: "All days except weekends",
-                              ),
-                              Item(
-                                title: "Some days",
-                              ),
-                            ],
+                            itemList: SyncRawData.availabilityList,
                             title: "Select your availability",
                             onItemSelect: (_) {
                               Navigator.pushReplacement(
@@ -195,48 +186,16 @@ class _HomePageState extends State<HomePage> {
                                 MaterialPageRoute(
                                   builder: (context) {
                                     return ItemList<int>(
-                                      itemList: [
-                                        Item(
-                                          title: "15 mins",
-                                          data: 15,
-                                        ),
-                                        Item(
-                                          title: "30 mins",
-                                          data: 30,
-                                        ),
-                                        Item(
-                                          title: "45 mins",
-                                          data: 45,
-                                        ),
-                                        Item(
-                                          title: "60 mins",
-                                          data: 60,
-                                        ),
-                                      ],
+                                      itemList: SyncRawData.timingList,
                                       title: "Choose sync duration",
                                       onItemSelect: (time) {
-                                        print(time);
                                         Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) {
                                               return ItemList<MeetingPlatform>(
-                                                itemList: [
-                                                  Item(
-                                                    title: "Google meet",
-                                                    data:
-                                                        MeetingPlatform.google,
-                                                  ),
-                                                  Item(
-                                                    title: "Zoom",
-                                                    data: MeetingPlatform.zoom,
-                                                  ),
-                                                  Item(
-                                                    title: "Huddle01",
-                                                    data: MeetingPlatform
-                                                        .huddle01,
-                                                  ),
-                                                ],
+                                                itemList:
+                                                    SyncRawData.meetingList,
                                                 title: "How you wanna sync?",
                                                 onItemSelect: (time) {
                                                   print(time);
