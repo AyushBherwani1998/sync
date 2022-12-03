@@ -18,6 +18,45 @@ mixin SyncContract {
   static DeployedContract get deployedContract =>
       DeployedContract(contractAbi, contractAddress);
 
+  static Future<void> fetchSchedules(String address) async {
+    final getScheduleEvent = deployedContract.function('getSchedule');
+    final result = await Web3ClientDart.client.call(
+      contract: deployedContract,
+      function: getScheduleEvent,
+      params: [EthereumAddress.fromHex(address)],
+    );
+
+    print(result);
+  }
+
+  static Future<String?> scheduleMeeting({
+    required String title,
+    required String description,
+    required int startTimeStamp,
+    required int endTimeStamp,
+    required String host,
+  }) async {
+    try {
+      final scheduleMeetingFunction = deployedContract.function(
+        'scheduleMeeting',
+      );
+
+      return await sendTransaction(
+        scheduleMeetingFunction,
+        [
+          title,
+          description,
+          BigInt.from(startTimeStamp),
+          BigInt.from(endTimeStamp),
+          EthereumAddress.fromHex(host),
+        ],
+      );
+    } catch (e) {
+      Vx.log('Schedule meeting: $e');
+      return null;
+    }
+  }
+
   static Future<SyncEvent?> fetchEvent(String address) async {
     final getEventFunction = deployedContract.function('getEvent');
     final result = await Web3ClientDart.client.call(
@@ -40,26 +79,40 @@ mixin SyncContract {
   ) async {
     try {
       final addEventFunction = deployedContract.function('addEvent');
-      final EthPrivateKey ethPrivateKey = WalletManager().getPrivateKey();
-      final hash = await Web3ClientDart.client.sendTransaction(
-          await Web3ClientDart.client.credentialsFromPrivateKey(
-            bytesToHex(ethPrivateKey.privateKey),
-          ),
-          Transaction.callContract(
-            contract: deployedContract,
-            function: addEventFunction,
-            parameters: [
-              'Sync availability',
-              BigInt.from(timeSlot),
-              BigInt.from(meetingPlatform.index)
-            ],
-          ),
-          // fetchChainIdFromNetworkId: true,
-          chainId: 5);
-      return hash;
+      return await sendTransaction(
+        addEventFunction,
+        [
+          'Sync availability',
+          BigInt.from(timeSlot),
+          BigInt.from(meetingPlatform.index)
+        ],
+      );
     } catch (e) {
       Vx.log(e);
       return null;
+    }
+  }
+
+  static Future<String> sendTransaction(
+    ContractFunction function,
+    List params,
+  ) async {
+    try {
+      final EthPrivateKey ethPrivateKey = WalletManager().getPrivateKey();
+      final hash = await Web3ClientDart.client.sendTransaction(
+        await Web3ClientDart.client.credentialsFromPrivateKey(
+          bytesToHex(ethPrivateKey.privateKey),
+        ),
+        Transaction.callContract(
+          contract: deployedContract,
+          function: function,
+          parameters: params,
+        ),
+        chainId: 5,
+      );
+      return hash;
+    } catch (e) {
+      throw Exception('Transaction Failed');
     }
   }
 
