@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/sync_colors.dart';
 import 'package:flutter_calendar/constants.dart';
+import 'package:flutter_calendar/home/guest/meeting_creation_page.dart';
 import 'package:flutter_calendar/home/update_name_page.dart';
 import 'package:flutter_calendar/home/widgets/user_detail_widget.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
+import 'package:flutter_calendar/wallet/screen/wallet_init_screen.dart';
+import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -79,8 +82,11 @@ class _GuestHomePageState extends State<GuestHomePage> {
                               ),
                             ),
                             onPressed: () {
+                              WalletManager().removeAccount();
                               Navigator.pop(context);
-                              // TODO(someshubham): Clear PK and go to home
+                              context.nextReplacementPage(
+                                const WalletInitScreen(),
+                              );
                             },
                           )
                         ],
@@ -173,6 +179,12 @@ class _GuestHomePageState extends State<GuestHomePage> {
                   },
                   initialSelectedDate: DateTime.now(),
                   onTap: (calendarTapDetails) {
+                    if (calendarTapDetails.date!.month !=
+                            DateTime.now().month ||
+                        calendarTapDetails.date!.day < DateTime.now().day) {
+                      return;
+                    }
+
                     showModalBottomSheet(
                       context: context,
                       clipBehavior: Clip.antiAlias,
@@ -183,22 +195,62 @@ class _GuestHomePageState extends State<GuestHomePage> {
                           maxChildSize: 0.75,
                           initialChildSize: 0.49,
                           builder: (context, controller) {
-                            return SafeArea(
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        "Select time to sync"
-                                            .text
-                                            .size(26)
-                                            .semiBold
-                                            .make()
-                                            .p16(),
-                                      ],
+                            return Container(
+                              color: const Color(0xff181818),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      "Select time to sync"
+                                          .text
+                                          .size(26)
+                                          .semiBold
+                                          .make()
+                                          .p16(),
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: 5,
+                                      itemBuilder: (context, index) {
+                                        return OutlinedButton(
+                                          style: TextButton.styleFrom(
+                                            alignment: Alignment.centerLeft,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                              vertical: 28,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) {
+                                                  return MeetingCreationPage(
+                                                    dateTime: DateTime.now(),
+                                                    time: "11:30",
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          child: "11:30"
+                                              .text
+                                              .size(18)
+                                              .semiBold
+                                              .color(
+                                                  Colors.white.withOpacity(0.8))
+                                              .make(),
+                                        ).p8();
+                                      },
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             );
                           },

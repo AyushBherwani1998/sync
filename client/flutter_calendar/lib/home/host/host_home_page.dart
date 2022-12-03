@@ -8,6 +8,8 @@ import 'package:flutter_calendar/home/widgets/availability_widget.dart';
 import 'package:flutter_calendar/home/widgets/upcoming_widget.dart';
 import 'package:flutter_calendar/home/widgets/user_detail_widget.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
+import 'package:flutter_calendar/wallet/screen/wallet_init_screen.dart';
+import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
 import 'package:flutter_calendar/widgets/item_list.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -81,8 +83,11 @@ class _HostHomePageState extends State<HostHomePage> {
                               ),
                             ),
                             onPressed: () {
+                              WalletManager().removeAccount();
                               Navigator.pop(context);
-                              // TODO(someshubham): Clear PK and go to home
+                              context.nextReplacementPage(
+                                const WalletInitScreen(),
+                              );
                             },
                           )
                         ],
