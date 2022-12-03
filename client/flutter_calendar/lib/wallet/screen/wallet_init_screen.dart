@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar/config/images.dart';
 import 'package:flutter_calendar/config/sync_colors.dart';
 import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/home/guest/guest_home_page.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_calendar/home/host/host_home_page.dart';
 import 'package:flutter_calendar/wallet/screen/import_private_key_screen.dart';
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -40,7 +42,10 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
         children: [
           Expanded(
             child: Center(
-              child: "Sync".text.size(40).make(),
+              child: Hero(
+                tag: 'SyncApp',
+                child: SvgPicture.asset(SyncImage.onboardingSvg),
+              ),
             ),
           ),
           SyncButton(

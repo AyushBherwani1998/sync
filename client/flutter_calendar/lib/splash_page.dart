@@ -2,11 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_calendar/config/images.dart';
 import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/home/guest/guest_home_page.dart';
 import 'package:flutter_calendar/home/host/host_home_page.dart';
 import 'package:flutter_calendar/wallet/screen/wallet_init_screen.dart';
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -128,8 +130,8 @@ class _SplashPageState extends State<SplashPage> {
           duration: const Duration(seconds: 1),
           opacity: _opacity,
           child: Hero(
-            tag: 'SafaltaTextLogo',
-            child: "Sync".text.size(40).make(),
+            tag: 'SyncApp',
+            child: SvgPicture.asset(SyncImage.onboardingSvg),
           ),
         ),
       ),
