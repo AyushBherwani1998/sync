@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
 import 'package:flutter_calendar/web3/web3_client.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -33,23 +34,31 @@ mixin SyncContract {
     return null;
   }
 
-  static Future<String?> addEvent() async {
+  static Future<String?> addEvent(
+    int timeSlot,
+    MeetingPlatform meetingPlatform,
+  ) async {
     try {
       final addEventFunction = deployedContract.function('addEvent');
       final EthPrivateKey ethPrivateKey = WalletManager().getPrivateKey();
       final hash = await Web3ClientDart.client.sendTransaction(
-        await Web3ClientDart.client.credentialsFromPrivateKey(
-          bytesToHex(ethPrivateKey.privateKey),
-        ),
-        Transaction.callContract(
-          contract: deployedContract,
-          function: addEventFunction,
-          parameters: ['Event', 30, 0],
-        ),
-        fetchChainIdFromNetworkId: true,
-      );
+          await Web3ClientDart.client.credentialsFromPrivateKey(
+            bytesToHex(ethPrivateKey.privateKey),
+          ),
+          Transaction.callContract(
+            contract: deployedContract,
+            function: addEventFunction,
+            parameters: [
+              'Sync availability',
+              BigInt.from(timeSlot),
+              BigInt.from(meetingPlatform.index)
+            ],
+          ),
+          // fetchChainIdFromNetworkId: true,
+          chainId: 5);
       return hash;
     } catch (e) {
+      Vx.log(e);
       return null;
     }
   }
