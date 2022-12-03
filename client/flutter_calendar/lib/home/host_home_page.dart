@@ -14,14 +14,14 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:web3dart/web3dart.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HostHomePage extends StatefulWidget {
+  const HostHomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HostHomePage> createState() => _HostHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HostHomePageState extends State<HostHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
