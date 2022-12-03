@@ -50,6 +50,7 @@ dependencies:
   path_provider: ^2.0.11
   provider: ^6.0.4
   syncfusion_flutter_calendar: ^20.3.59
+  random_avatar: ^0.0.7
   velocity_x: ^3.6.0
   web3dart: ^2.5.1
 
