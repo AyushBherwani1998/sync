@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_calendar">
+    package="com.flutter.sync.flutter_calendar">
    <application
         android:label="flutter_calendar"
         android:name="${applicationName}"
