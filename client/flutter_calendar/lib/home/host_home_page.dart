@@ -39,9 +39,7 @@ class _HostHomePageState extends State<HostHomePage> {
             final uintList =
                 privateKeyBox.get(SyncConstant.privateKeyStorageKey);
             final key = EthPrivateKey.fromHex(bytesToHex(uintList));
-            return Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            return ListView(
               children: [
                 UserDetailWidget(
                   privateKey: key,
