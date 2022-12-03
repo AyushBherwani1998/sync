@@ -28,9 +28,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="w3a" android:host="com.flutter.sync.flutter_calendar" android:path="/auth" />
-                <data
-                    android:scheme="https"
-                    android:host="sync.com" />
+                <data android:scheme="https" android:host="sync.com" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
