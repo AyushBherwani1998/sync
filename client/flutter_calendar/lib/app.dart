@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
     final isFirstTimeUser = WalletManager().isFirstTimeUser();
     return MaterialApp(
       theme: SyncTheme.themeData,
-      home: isFirstTimeUser ? const WalletInitScreen() : const GuestHomePage(),
+      home: isFirstTimeUser ? const WalletInitScreen() : const HostHomePage(),
       builder: BotToastInit(),
     );
   }
