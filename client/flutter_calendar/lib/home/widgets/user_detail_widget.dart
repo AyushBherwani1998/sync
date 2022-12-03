@@ -62,15 +62,29 @@ class UserDetailWidget extends StatelessWidget {
               } else {
                 address = publicAddress.addressAbbreviation;
               }
-              return address.text
-                  .size(24)
-                  .textStyle(
-                    const TextStyle(
-                      decoration: TextDecoration.underline,
-                      decorationStyle: TextDecorationStyle.dotted,
-                    ),
-                  )
-                  .make();
+              return ValueListenableBuilder(
+                valueListenable:
+                    Hive.box(SyncConstant.userNameBox).listenable(),
+                builder: (context, box, _) {
+                  final isUserNamePresent =
+                      box.containsKey(SyncConstant.userNameKey);
+                  if (!isUserNamePresent) {
+                    box.put(SyncConstant.userNameKey, address);
+                  }
+                  return box
+                      .get(SyncConstant.userNameKey)
+                      .toString()
+                      .text
+                      .size(24)
+                      .textStyle(
+                        const TextStyle(
+                          decoration: TextDecoration.underline,
+                          decorationStyle: TextDecorationStyle.dotted,
+                        ),
+                      )
+                      .make();
+                },
+              );
             },
           ),
         ),
