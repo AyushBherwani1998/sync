@@ -1,6 +1,7 @@
 import 'dart:math'; //used for the random number generator
 
 import 'package:flutter_calendar/constants.dart';
+import 'package:flutter_calendar/utils/crypto_utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -17,6 +18,13 @@ class WalletManager {
   Future<void> importWalletFromPrivateKey({required String key}) async {
     privateKey = EthPrivateKey.fromHex(key);
     await _savePrivateKey();
+  }
+
+  EthPrivateKey getPrivateKey() {
+    final box = Hive.box(SyncConstant.privateKeyBox);
+    final privateKeyBytes = box.get(SyncConstant.privateKeyStorageKey);
+    final key = EthPrivateKey.fromHex(bytesToHex(privateKeyBytes));
+    return key;
   }
 
   Future<void> _savePrivateKey() async {
