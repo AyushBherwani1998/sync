@@ -10,7 +10,7 @@ mixin ENSResolver {
         await ens.withName(ensName).getAddress();
     return ethereumAddress.hex;
   }
-  
+
   /// Returns null if no ENS is registered
   static Future<String?> getENS(String address) async {
     try {
