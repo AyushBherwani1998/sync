@@ -27,6 +27,11 @@ class WalletManager {
     return key;
   }
 
+  String getUserAddress() {
+    EthPrivateKey privateKey = getPrivateKey();
+    return bytesToHex(privateKey.address.addressBytes);
+  }
+
   Future<void> _savePrivateKey() async {
     await box.put(
       SyncConstant.privateKeyStorageKey,
