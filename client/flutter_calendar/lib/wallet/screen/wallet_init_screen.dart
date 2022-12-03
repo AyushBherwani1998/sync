@@ -4,6 +4,10 @@ import 'package:flutter_calendar/wallet/screen/import_private_key_screen.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:web3auth_flutter/enums.dart';
+import 'package:web3auth_flutter/input.dart';
+import 'package:web3auth_flutter/output.dart';
+import 'package:web3auth_flutter/web3auth_flutter.dart';
 
 class WalletInitScreen extends StatefulWidget {
   const WalletInitScreen({Key? key}) : super(key: key);
@@ -57,7 +61,12 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
             ),
             textColor: SyncColor.primaryColor,
             bgColor: Colors.white,
-            onTap: () {},
+            onTap: () async {
+              final Web3AuthResponse response = await Web3AuthFlutter.login(
+                 LoginParams(loginProvider: Provider.google)
+                );
+                print(response.privKey);
+            },
           ),
           40.heightBox,
         ],

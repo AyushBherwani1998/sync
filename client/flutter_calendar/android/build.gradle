@@ -1,8 +1,10 @@
 buildscript {
     ext.kotlin_version = '1.6.10'
+    ext.web3auth_version = '2.6.0'
     repositories {
         google()
         mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 
     dependencies {
@@ -15,6 +17,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 

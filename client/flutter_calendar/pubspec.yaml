@@ -49,6 +49,7 @@ dependencies:
   syncfusion_flutter_calendar: ^20.3.59
   velocity_x: ^3.6.0
   web3dart: ^2.5.1
+  web3auth_flutter: ^1.0.3
 
 dev_dependencies:
   flutter_lints: ^2.0.0

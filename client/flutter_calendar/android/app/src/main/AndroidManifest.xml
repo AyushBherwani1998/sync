@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flutter_calendar">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="flutter_calendar"
         android:name="${applicationName}"
@@ -23,6 +24,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <data android:scheme="https" android:host="com.example.flutter_calendar" android:path="/auth" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
