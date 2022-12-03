@@ -6,5 +6,6 @@ class SyncLottie {
 
   static const String done = "$_basePath/done.json";
 
+  static const String loader = "$_basePath/loader.json";
 
 }

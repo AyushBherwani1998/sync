@@ -8,6 +8,8 @@ import 'package:flutter_calendar/home/widgets/user_detail_widget.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
 import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
 import 'package:flutter_calendar/web3/sync/sync_contract.dart';
+import 'package:flutter_calendar/wallet/screen/wallet_init_screen.dart';
+import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -117,8 +119,11 @@ class _GuestHomePageState extends State<GuestHomePage> with SyncContract {
                               ),
                             ),
                             onPressed: () {
+                              WalletManager().removeAccount();
                               Navigator.pop(context);
-                              // TODO(someshubham): Clear PK and go to home
+                              context.nextReplacementPage(
+                                const WalletInitScreen(),
+                              );
                             },
                           )
                         ],

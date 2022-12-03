@@ -2,6 +2,7 @@ import 'dart:math'; //used for the random number generator
 
 import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
+import 'package:flutter_calendar/web3/sync/sync_contract.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -25,6 +26,12 @@ class WalletManager {
     final privateKeyBytes = box.get(SyncConstant.privateKeyStorageKey);
     final key = EthPrivateKey.fromHex(bytesToHex(privateKeyBytes));
     return key;
+  }
+
+  Future<bool> removeAccount() async {
+    final box = Hive.box(SyncConstant.privateKeyBox);
+    final isCleared = await box.clear();
+    return isCleared == 0;
   }
 
   String getUserAddress() {
