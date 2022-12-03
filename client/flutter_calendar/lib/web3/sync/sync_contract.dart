@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
+import 'package:flutter_calendar/web3/sync/models/schedules.dart';
 import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
 import 'package:flutter_calendar/web3/web3_client.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -18,13 +19,15 @@ mixin SyncContract {
   static DeployedContract get deployedContract =>
       DeployedContract(contractAbi, contractAddress);
 
-  static Future<void> fetchSchedules(String address) async {
+  static Future<MeetingSchedules> fetchSchedules(String address) async {
     final getScheduleEvent = deployedContract.function('getSchedules');
     final result = await Web3ClientDart.client.call(
       contract: deployedContract,
       function: getScheduleEvent,
       params: [EthereumAddress.fromHex(address)],
     );
+
+    return MeetingSchedules.fromList(result);
   }
 
   static Future<String?> scheduleMeeting({
