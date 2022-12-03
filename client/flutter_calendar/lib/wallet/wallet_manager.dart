@@ -7,22 +7,22 @@ import 'package:web3dart/web3dart.dart';
 class WalletManager {
   EthPrivateKey? privateKey;
 
-  void createWallet() {
+  Future<void> createWallet() async {
     var rng = Random.secure();
     privateKey = EthPrivateKey.createRandom(rng);
-    _savePrivateKey();
+    await _savePrivateKey();
   }
 
-  void importWalletFromPrivateKey({required String key}) {
+  Future<void> importWalletFromPrivateKey({required String key}) async {
     privateKey = EthPrivateKey.fromHex(key);
-    _savePrivateKey();
+    await _savePrivateKey();
   }
 
-  _savePrivateKey() {
+  Future<void> _savePrivateKey() async {
     final box = Hive.box(SyncConstant.privateKeyBox);
-    box.put(
+    await box.put(
       SyncConstant.privateKeyStorageKey,
-      privateKey,
+      privateKey!.privateKey,
     );
   }
 }
