@@ -18,13 +18,13 @@ mixin SyncContract {
   static DeployedContract get deployedContract =>
       DeployedContract(contractAbi, contractAddress);
 
-  static Future<SyncEvent?> fetchEvent() async {
+  static Future<SyncEvent?> fetchEvent(String address) async {
     final getEventFunction = deployedContract.function('getEvent');
     final result = await Web3ClientDart.client.call(
       contract: deployedContract,
       function: getEventFunction,
       params: [
-        EthereumAddress.fromHex('0x4b08B1ece8faC899bA6243FBb0DA09B7dE63dA06'),
+        EthereumAddress.fromHex(address),
       ],
     );
     final SyncEvent syncEvent = SyncEvent.fromList(result.first);
