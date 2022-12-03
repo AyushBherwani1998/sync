@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/app.dart';
@@ -7,6 +8,9 @@ import 'package:flutter_calendar/data/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:flutter/services.dart' show PlatformException;
+import 'package:web3auth_flutter/enums.dart';
+import 'package:web3auth_flutter/input.dart';
+import 'package:web3auth_flutter/web3auth_flutter.dart';
 
 
 void main() async {
@@ -16,7 +20,23 @@ void main() async {
 
   await Hive.openBox(SyncConstant.privateKeyBox);
   await Hive.openBox(SyncConstant.userNameBox);
-  runZonedGuarded(() {
+  runZonedGuarded(() async {
+    Uri redirectUrl;
+    if (Platform.isAndroid) {
+      redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+      // w3a://com.example.w3aflutter/auth
+    } else if (Platform.isIOS) {
+      redirectUrl = Uri.parse('{bundleId}://openlogin');
+      // com.example.w3aflutter://openlogin
+    } else {
+      throw UnKnownException('Unknown platform');
+    }
+
+    await Web3AuthFlutter.init(Web3AuthOptions(
+        clientId: 'BN45-V-mSBoMGddLJIdubOEndvnR-14R20nJNICEy7Qqad6G7hKREhTxiQahm8z44JXIv_GSFeU6DsnUs5UWmNA',
+        network: Network.mainnet,
+        redirectUrl: redirectUrl
+    ));
     runApp(const MyApp());
   }, (error, stackTrace) {
     print(stackTrace);

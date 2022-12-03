@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_calendar">
+    package="com.flutter.sync.flutter_calendar">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="flutter_calendar"
         android:name="${applicationName}"
@@ -26,6 +27,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="w3a" android:host="com.flutter.sync.flutter_calendar" android:path="/auth" />
                 <data
                     android:scheme="https"
                     android:host="sync.com" />

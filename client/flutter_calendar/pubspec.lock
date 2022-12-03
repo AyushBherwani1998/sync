@@ -665,6 +665,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.3.0"
+  web3auth_flutter:
+    dependency: "direct main"
+    description:
+      name: web3auth_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   web3dart:
     dependency: "direct main"
     description:
