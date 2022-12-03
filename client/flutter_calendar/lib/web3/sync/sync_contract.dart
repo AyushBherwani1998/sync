@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
 import 'package:flutter_calendar/web3/web3_client.dart';
+import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 
 mixin SyncContract {
@@ -29,6 +31,27 @@ mixin SyncContract {
       return syncEvent;
     }
     return null;
+  }
+
+  static Future<String?> addEvent() async {
+    try {
+      final addEventFunction = deployedContract.function('addEvent');
+      final EthPrivateKey ethPrivateKey = WalletManager().getPrivateKey();
+      final hash = await Web3ClientDart.client.sendTransaction(
+        await Web3ClientDart.client.credentialsFromPrivateKey(
+          bytesToHex(ethPrivateKey.privateKey),
+        ),
+        Transaction.callContract(
+          contract: deployedContract,
+          function: addEventFunction,
+          parameters: ['Event', 30, 0],
+        ),
+        fetchChainIdFromNetworkId: true,
+      );
+      return hash;
+    } catch (e) {
+      return null;
+    }
   }
 
   static final abiMap = [
