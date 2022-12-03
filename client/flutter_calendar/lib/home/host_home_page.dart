@@ -2,22 +2,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/data/models/schedule_model.dart';
+import 'package:flutter_calendar/data/sync_raw_data.dart';
+import 'package:flutter_calendar/home/update_name_page.dart';
 import 'package:flutter_calendar/home/widgets/availability_widget.dart';
 import 'package:flutter_calendar/home/widgets/upcoming_widget.dart';
 import 'package:flutter_calendar/home/widgets/user_detail_widget.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
+import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
+import 'package:flutter_calendar/widgets/item_list.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:web3dart/web3dart.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HostHomePage extends StatefulWidget {
+  const HostHomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HostHomePage> createState() => _HostHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HostHomePageState extends State<HostHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +58,14 @@ class _HomePageState extends State<HomePage> {
                             child: const Text('Edit Name'),
                             onPressed: () {
                               Navigator.pop(context);
-                              // TODO(someshubham): Go to edit name
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return const UpdateNamePage();
+                                  },
+                                ),
+                              );
                             },
                           ),
                           CupertinoActionSheetAction(
@@ -159,8 +170,51 @@ class _HomePageState extends State<HomePage> {
                 ),
                 10.heightBox,
                 AvailabilityWidget(
+                  isAlreadyAvailable: true,
                   onAddAvailability: () {
                     // TODO(someshubham): Add your availability callback
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ItemList<String>(
+                            itemList: SyncRawData.availabilityList,
+                            title: "Select your availability",
+                            onItemSelect: (_) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return ItemList<int>(
+                                      itemList: SyncRawData.timingList,
+                                      title: "Choose sync duration",
+                                      onItemSelect: (time) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return ItemList<MeetingPlatform>(
+                                                itemList:
+                                                    SyncRawData.meetingList,
+                                                title: "How you wanna sync?",
+                                                onItemSelect: (time) {
+                                                  print(time);
+                                                  Navigator.pop(context);
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    );
                   },
                   onShareAvailability: () {
                     // TODO(someshubham): Add your Share callback
