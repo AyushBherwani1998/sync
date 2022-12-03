@@ -6,6 +6,8 @@ import 'package:flutter_calendar/home/guest/meeting_creation_page.dart';
 import 'package:flutter_calendar/home/update_name_page.dart';
 import 'package:flutter_calendar/home/widgets/user_detail_widget.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
+import 'package:flutter_calendar/wallet/screen/wallet_init_screen.dart';
+import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -80,8 +82,11 @@ class _GuestHomePageState extends State<GuestHomePage> {
                               ),
                             ),
                             onPressed: () {
+                              WalletManager().removeAccount();
                               Navigator.pop(context);
-                              // TODO(someshubham): Clear PK and go to home
+                              context.nextReplacementPage(
+                                const WalletInitScreen(),
+                              );
                             },
                           )
                         ],
