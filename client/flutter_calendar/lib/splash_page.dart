@@ -131,7 +131,10 @@ class _SplashPageState extends State<SplashPage> {
           opacity: _opacity,
           child: Hero(
             tag: 'SyncApp',
-            child: SvgPicture.asset(SyncImage.onboardingSvg),
+            child: SvgPicture.asset(
+              SyncImage.onboardingSvg,
+              height: 280,
+            ),
           ),
         ),
       ),

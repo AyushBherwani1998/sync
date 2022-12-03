@@ -44,7 +44,10 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
             child: Center(
               child: Hero(
                 tag: 'SyncApp',
-                child: SvgPicture.asset(SyncImage.onboardingSvg),
+                child: SvgPicture.asset(
+                  SyncImage.onboardingSvg,
+                  height: 280,
+                ),
               ),
             ),
           ),
