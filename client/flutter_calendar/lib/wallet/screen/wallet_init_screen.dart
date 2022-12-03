@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/sync_colors.dart';
+import 'package:flutter_calendar/home/home_page.dart';
 import 'package:flutter_calendar/wallet/screen/import_private_key_screen.dart';
+import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -28,15 +30,21 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
           ),
           SyncButton(
             label: "Create new wallet",
-            onTap: () {},
-            icon: const Icon(Icons.create),
+            onTap: () async {
+              // Create wallet
+              await WalletManager().createWallet();
+
+              // Navigate to home page
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return const HomePage();
+                }),
+              );
+            },
           ),
           SyncButton(
             label: "Import wallet",
-            icon: const Icon(
-              Icons.import_export_sharp,
-              color: SyncColor.primaryColor,
-            ),
             textColor: SyncColor.primaryColor,
             bgColor: Colors.white,
             onTap: () {
