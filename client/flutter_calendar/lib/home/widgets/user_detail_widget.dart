@@ -24,8 +24,10 @@ class UserDetailWidget extends StatelessWidget {
         ],
       ),
       [
-        "Hi ".text.caption(context).size(24).make(),
-        "${privateKey.address.toString().addressAbbreviation},"
+        "Hi, ".text.caption(context).size(24).make(),
+        privateKey.address
+            .toString()
+            .addressAbbreviation
             .text
             .size(24)
             .textStyle(
