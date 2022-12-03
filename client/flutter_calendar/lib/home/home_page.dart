@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/data/models/schedule_model.dart';
+import 'package:flutter_calendar/home/update_name_page.dart';
 import 'package:flutter_calendar/home/widgets/availability_widget.dart';
 import 'package:flutter_calendar/home/widgets/upcoming_widget.dart';
 import 'package:flutter_calendar/home/widgets/user_detail_widget.dart';
@@ -54,7 +55,14 @@ class _HomePageState extends State<HomePage> {
                             child: const Text('Edit Name'),
                             onPressed: () {
                               Navigator.pop(context);
-                              // TODO(someshubham): Go to edit name
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return const UpdateNamePage();
+                                  },
+                                ),
+                              );
                             },
                           ),
                           CupertinoActionSheetAction(
