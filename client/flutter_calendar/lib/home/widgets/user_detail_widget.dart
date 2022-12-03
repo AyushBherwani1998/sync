@@ -3,6 +3,7 @@ import 'package:flutter_calendar/config/images.dart';
 import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/ens/ens_resolver.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
+import 'package:flutter_calendar/widgets/avatar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:web3dart/web3dart.dart';
@@ -28,8 +29,11 @@ class UserDetailWidget extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            SyncImage.avatar,
+          FutureBuilder(
+            future: ENSResolver.getENS(publicAddress),
+            builder: (context, snapshot) {
+              return Avatar(ens: snapshot.data ?? publicAddress);
+            },
           ),
         ],
       ),
