@@ -1,8 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/sync_theme.dart';
-import 'package:flutter_calendar/home/guest_home_page.dart';
-import 'package:flutter_calendar/home/host_home_page.dart';
+import 'package:flutter_calendar/home/guest/guest_home_page.dart';
+import 'package:flutter_calendar/home/host/host_home_page.dart';
 import 'package:flutter_calendar/wallet/screen/wallet_init_screen.dart';
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
 
@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
     final isFirstTimeUser = WalletManager().isFirstTimeUser();
     return MaterialApp(
       theme: SyncTheme.themeData,
-      home: isFirstTimeUser ? const WalletInitScreen() : const HostHomePage(),
+      home: isFirstTimeUser ? const WalletInitScreen() : const GuestHomePage(),
       builder: BotToastInit(),
     );
   }
