@@ -4,4 +4,6 @@ class SyncConstant {
 
   static const String userNameBox = "user_name_box";
   static const String userNameKey = "user_name_key";
+  static const String iosAppendLink = "sync://address=";
+  static const String androidAppendLink = "https://sync.com?address=";
 }
