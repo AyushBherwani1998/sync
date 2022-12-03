@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/images.dart';
 import 'package:flutter_calendar/config/sync_colors.dart';
+import 'package:flutter_calendar/data/meeting_platform.dart';
+import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -9,11 +11,13 @@ class AvailabilityWidget extends StatelessWidget {
   final VoidCallback onAddAvailability;
   final VoidCallback onShareAvailability;
   final bool isAlreadyAvailable;
+  final SyncEvent? syncEvent;
 
   const AvailabilityWidget({
     required this.onAddAvailability,
     required this.onShareAvailability,
     this.isAlreadyAvailable = true,
+    this.syncEvent,
     Key? key,
   }) : super(key: key);
 
@@ -40,7 +44,12 @@ class AvailabilityWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        "30 mins".text.size(28).bold.make().pOnly(
+                        "${syncEvent!.timeSlot.toString()} min"
+                            .text
+                            .size(28)
+                            .bold
+                            .make()
+                            .pOnly(
                               top: 20,
                               left: 16,
                             ),
@@ -57,7 +66,9 @@ class AvailabilityWidget extends StatelessWidget {
                               radius: 12,
                             ),
                             8.widthBox,
-                            "Huddle01".text.size(18).make(),
+                            syncEvent!.meetingPlatform.provider!.text
+                                .size(18)
+                                .make(),
                           ],
                         ).p16(),
                       ],

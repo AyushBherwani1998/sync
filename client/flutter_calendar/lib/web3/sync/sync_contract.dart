@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_calendar/data/meeting_platform.dart';
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:flutter_calendar/web3/sync/models/schedules.dart';
 import 'package:flutter_calendar/web3/sync/models/sync_event.dart';

@@ -1,6 +1,8 @@
+import 'package:flutter_calendar/data/meeting_platform.dart';
+
 class SyncEvent {
   String title;
-  DateTime timeSlot;
+  int timeSlot;
   MeetingPlatform meetingPlatform;
 
   bool get isEventAvailable => title.isNotEmpty;
@@ -14,10 +16,9 @@ class SyncEvent {
   factory SyncEvent.fromList(List list) {
     return SyncEvent(
       title: list.first,
-      timeSlot: DateTime.fromMillisecondsSinceEpoch(list[1].toInt()),
+      timeSlot: list[1].toInt(),
       meetingPlatform: MeetingPlatform.values[list.last.toInt()],
     );
   }
 }
 
-enum MeetingPlatform { google, zoom, huddle01 }
