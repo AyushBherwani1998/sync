@@ -1,8 +1,37 @@
 import 'dart:convert';
 
+import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
+import 'package:flutter_calendar/web3/web3_client.dart';
+import 'package:web3dart/web3dart.dart';
+
 mixin SyncContract {
-  String get jsonData => jsonEncode(abiMap);
-  final abiMap = [
+  static String get jsonData => jsonEncode(abiMap);
+
+  static EthereumAddress get contractAddress =>
+      EthereumAddress.fromHex('0x6c3699b552d23caa49a561321de9cb74a8a87491');
+
+  static ContractAbi get contractAbi => ContractAbi.fromJson(jsonData, 'Sync');
+
+  static DeployedContract get deployedContract =>
+      DeployedContract(contractAbi, contractAddress);
+
+  static Future<SyncEvent?> fetchEvent() async {
+    final getEventFunction = deployedContract.function('getEvent');
+    final result = await Web3ClientDart.client.call(
+      contract: deployedContract,
+      function: getEventFunction,
+      params: [
+        EthereumAddress.fromHex('0x4b08B1ece8faC899bA6243FBb0DA09B7dE63dA06'),
+      ],
+    );
+    final SyncEvent syncEvent = SyncEvent.fromList(result.first);
+    if (syncEvent.isEventAvailable) {
+      return syncEvent;
+    }
+    return null;
+  }
+
+  static final abiMap = [
     {
       "anonymous": false,
       "inputs": [
