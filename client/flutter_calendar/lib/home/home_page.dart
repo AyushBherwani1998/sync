@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_calendar/config/images.dart';
 import 'package:flutter_calendar/constants.dart';
+import 'package:flutter_calendar/home/widgets/user_detail_widget.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -35,29 +35,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      SyncImage.avatar,
-                    ),
-                  ],
-                ),
-                [
-                  "Hi ".text.caption(context).size(24).make(),
-                  key.address
-                      .toString()
-                      .addressAbbreviation
-                      .text
-                      .size(24)
-                      .textStyle(
-                        const TextStyle(
-                          decoration: TextDecoration.underline,
-                          decorationStyle: TextDecorationStyle.dotted,
-                        ),
-                      )
-                      .make(),
-                ].row(crossAlignment: CrossAxisAlignment.end),
+                UserDetailWidget(privateKey: key),
               ],
             );
           }),
