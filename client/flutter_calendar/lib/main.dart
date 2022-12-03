@@ -21,14 +21,5 @@ void main() async {
     print(stackTrace);
   });
 
-  // linkStream.listen((String? data) {
-  //   print('got uri: $data');
-  //   if (data?.isNotEmpty ?? false) {
-  //     final address = data!.split("=")[1];
-  //     //navigate to this address
-  //     print("Session Link address: $address");
-  //   }
-  // }, onError: (Object err) {
-  //   print('got err: $err');
-  // });
+  
 }

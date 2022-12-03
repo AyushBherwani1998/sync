@@ -22,12 +22,15 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       setState(() => _opacity = 1);
       Future.delayed(const Duration(seconds: 2)).then(
         (_) async {
+          //listenForUri(context);
           final isFirstTimeUser = WalletManager().isFirstTimeUser();
           final url = await checkForShareUri();
+          //"sync://address=0xD41dccEe35a0aBb7914A6b6A468395BBAeBD2cB0"; //
           await saveHostAddress(url);
           if (url?.isNotEmpty ?? false) {
             if (isFirstTimeUser) {
@@ -68,6 +71,33 @@ class _SplashPageState extends State<SplashPage> {
           }
         },
       );
+    });
+  }
+
+  listenForUri(BuildContext context) {
+    linkStream.listen((String? data) {
+      print('got uri: $data');
+      saveHostAddress(data);
+      if (data?.isNotEmpty ?? false) {
+        final isFirstTimeUser = WalletManager().isFirstTimeUser();
+        if (isFirstTimeUser) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return const WalletInitScreen();
+            }),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return const GuestHomePage();
+            }),
+          );
+        }
+      }
+    }, onError: (Object err) {
+      print('got err: $err');
     });
   }
 

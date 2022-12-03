@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/home/guest/meeting_confirmation_page.dart';
+import 'package:flutter_calendar/utils/crypto_utils.dart';
+import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class MeetingCreationPage extends StatefulWidget {
   final DateTime dateTime;
-  final String time;
+  final SyncEvent event;
   const MeetingCreationPage({
     required this.dateTime,
-    required this.time,
+    required this.event,
     Key? key,
   }) : super(key: key);
 
@@ -21,6 +26,16 @@ class _MeetingCreationPageState extends State<MeetingCreationPage> {
   final agendaController = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey();
+
+  late String hostAddress;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    hostAddress =
+        Hive.box(SyncConstant.hostAddressBox).get(SyncConstant.hostAddressKey);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +62,13 @@ class _MeetingCreationPageState extends State<MeetingCreationPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              "7th May   •   9:30 PM   •   30mins"
+                              "${DateFormat('MMMd').format(widget.dateTime)}   •   ${DateFormat('jm').format(widget.dateTime)}   •   ${widget.event.timeSlot}mins"
                                   .text
                                   .size(20)
                                   .semiBold
                                   .make()
                                   .p12(),
-                              "with ayush.eth"
+                              "with ${hostAddress.toString().addressAbbreviation}"
                                   .text
                                   .caption(context)
                                   .size(16)
