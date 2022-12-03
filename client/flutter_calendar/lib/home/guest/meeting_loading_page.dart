@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/sync_lottie.dart';
+import 'package:flutter_calendar/constants.dart';
+import 'package:flutter_calendar/utils/crypto_utils.dart';
+import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
 import 'package:flutter_calendar/web3/web3_client.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -9,20 +14,26 @@ class MeetingLoadingPager extends StatefulWidget {
   final ValueChanged<BuildContext> onFailure;
   final String hash;
 
-  const MeetingLoadingPager(
-      {Key? key,
-        required this.onSuccess,
-        required this.onFailure,
-        required this.hash
-      })
-      : super(key: key);
+  final DateTime dateTime;
+  final SyncEvent event;
+  final String title;
+
+  const MeetingLoadingPager({
+    Key? key,
+    required this.onSuccess,
+    required this.onFailure,
+    required this.hash,
+    required this.dateTime,
+    required this.event,
+    required this.title,
+  }) : super(key: key);
 
   @override
-  State<MeetingLoadingPager> createState() =>
-      _MeetingLoadingPageState();
+  State<MeetingLoadingPager> createState() => _MeetingLoadingPageState();
 }
 
 class _MeetingLoadingPageState extends State<MeetingLoadingPager> {
+  late String hostAddress;
 
   @override
   void initState() {
@@ -36,6 +47,9 @@ class _MeetingLoadingPageState extends State<MeetingLoadingPager> {
     }).catchError((e) {
       widget.onFailure(context);
     });
+
+    hostAddress =
+        Hive.box(SyncConstant.hostAddressBox).get(SyncConstant.hostAddressKey);
   }
 
   @override
@@ -65,23 +79,23 @@ class _MeetingLoadingPageState extends State<MeetingLoadingPager> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      "Ayush <> ETHFinalist"
+                      widget.title
                           .text
                           .semiBold
                           .size(24)
                           .make()
                           .p12(),
-                      "with ayush.eth"
+                      "with ${hostAddress.toString().addressAbbreviation}"
                           .text
                           .caption(context)
                           .size(16)
                           .make()
                           .pOnly(
-                        left: 12,
-                        top: 12,
-                        bottom: 12,
-                      ),
-                      "7th May   •   9:30 PM   •   30mins"
+                            left: 12,
+                            top: 12,
+                            bottom: 12,
+                          ),
+                      "${DateFormat('MMMd').format(widget.dateTime)}   •   ${DateFormat('jm').format(widget.dateTime)}   •   ${widget.event.timeSlot}mins"
                           .text
                           .size(20)
                           .semiBold

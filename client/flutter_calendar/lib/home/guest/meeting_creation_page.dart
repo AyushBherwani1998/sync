@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/home/guest/meeting_confirmation_page.dart';
+import 'package:flutter_calendar/home/guest/meeting_loading_page.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
 import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
+import 'package:flutter_calendar/web3/sync/sync_contract.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
@@ -120,11 +122,44 @@ class _MeetingCreationPageState extends State<MeetingCreationPage> {
             ),
             SyncButton(
               label: "Confirm",
-              onTap: () {
+              onTap: () async {
+                final hash = await SyncContract.scheduleMeeting(
+                  title: nameController.text,
+                  description: agendaController.text,
+                  startTimeStamp: widget.dateTime.millisecondsSinceEpoch,
+                  endTimeStamp: widget.dateTime
+                      .add(
+                        Duration(minutes: widget.event.timeSlot),
+                      )
+                      .millisecondsSinceEpoch,
+                  host: hostAddress,
+                );
+
+                // ignore: use_build_context_synchronously
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
-                    return const MeetingConfirmationPage();
+                    return MeetingLoadingPager(
+                      dateTime: widget.dateTime,
+                      event: widget.event,
+                      title: nameController.text,
+                      hash: hash!,
+                      onSuccess: (value) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return MeetingConfirmationPage(
+                                dateTime: widget.dateTime,
+                                event: widget.event,
+                                title: nameController.text,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      onFailure: (value) {},
+                    );
                   }),
                 );
               },

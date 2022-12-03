@@ -30,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
           //listenForUri(context);
           final isFirstTimeUser = WalletManager().isFirstTimeUser();
           final url = await checkForShareUri();
-          //"sync://address=0xD41dccEe35a0aBb7914A6b6A468395BBAeBD2cB0"; //
+          //"sync://address=0xD41dccEe35a0aBb7914A6b6A468395BBAeBD2cB0";
           await saveHostAddress(url);
           if (url?.isNotEmpty ?? false) {
             if (isFirstTimeUser) {
