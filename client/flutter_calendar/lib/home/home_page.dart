@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 [
-                  "Hi ".text.caption(context).size(24).make(),
+                  "Hi, ".text.caption(context).size(24).make(),
                   key.address
                       .toString()
                       .addressAbbreviation
