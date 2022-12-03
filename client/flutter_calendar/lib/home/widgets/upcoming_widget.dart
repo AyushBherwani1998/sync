@@ -56,13 +56,11 @@ class UpcomingWidget extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    //
                     scheduleModel.title.text.size(18).semiBold.make(),
                     const Spacer(),
                     const Icon(Icons.more_vert),
                   ],
                 ).p16(),
-                //
                 if (scheduleModel.description.isNotEmptyAndNotNull)
                   scheduleModel.description!.text
                       .caption(context)

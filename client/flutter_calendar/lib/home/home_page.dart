@@ -63,8 +63,11 @@ class _HomePageState extends State<HomePage> {
                 ),
                 10.heightBox,
                 AvailabilityWidget(
-                  onTap: () {
+                  onAddAvailability: () {
                     // TODO(someshubham): Add your availability callback
+                  },
+                  onShareAvailability: () {
+                    // TODO(someshubham): Add your Share callback
                   },
                 ),
               ],
