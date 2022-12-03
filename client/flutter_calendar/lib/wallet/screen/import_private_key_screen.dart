@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_calendar/config/sync_colors.dart';
 import 'package:flutter_calendar/home/home_page.dart';
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
@@ -53,7 +54,10 @@ class _ImportPrivateKeyScreenState extends State<ImportPrivateKeyScreen>
             ).p12(),
             8.heightBox,
             TextButton.icon(
-              onPressed: () {},
+              onPressed: () async {
+                final data = await Clipboard.getData("text/plain");
+                privateKeyController.text = data?.text ?? "";
+              },
               icon: const Icon(
                 Icons.copy,
                 color: SyncColor.primaryColor,
