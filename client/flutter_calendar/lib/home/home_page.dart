@@ -7,6 +7,8 @@ import 'package:flutter_calendar/home/widgets/availability_widget.dart';
 import 'package:flutter_calendar/home/widgets/upcoming_widget.dart';
 import 'package:flutter_calendar/home/widgets/user_detail_widget.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
+import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
+import 'package:flutter_calendar/widgets/item_list.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:web3dart/web3dart.dart';
@@ -167,8 +169,93 @@ class _HomePageState extends State<HomePage> {
                 ),
                 10.heightBox,
                 AvailabilityWidget(
+                  isAlreadyAvailable: true,
                   onAddAvailability: () {
                     // TODO(someshubham): Add your availability callback
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ItemList<String>(
+                            itemList: [
+                              Item(
+                                title: "Everyday",
+                              ),
+                              Item(
+                                title: "All days except weekends",
+                              ),
+                              Item(
+                                title: "Some days",
+                              ),
+                            ],
+                            title: "Select your availability",
+                            onItemSelect: (_) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return ItemList<int>(
+                                      itemList: [
+                                        Item(
+                                          title: "15 mins",
+                                          data: 15,
+                                        ),
+                                        Item(
+                                          title: "30 mins",
+                                          data: 30,
+                                        ),
+                                        Item(
+                                          title: "45 mins",
+                                          data: 45,
+                                        ),
+                                        Item(
+                                          title: "60 mins",
+                                          data: 60,
+                                        ),
+                                      ],
+                                      title: "Choose sync duration",
+                                      onItemSelect: (time) {
+                                        print(time);
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return ItemList<MeetingPlatform>(
+                                                itemList: [
+                                                  Item(
+                                                    title: "Google meet",
+                                                    data:
+                                                        MeetingPlatform.google,
+                                                  ),
+                                                  Item(
+                                                    title: "Zoom",
+                                                    data: MeetingPlatform.zoom,
+                                                  ),
+                                                  Item(
+                                                    title: "Huddle01",
+                                                    data: MeetingPlatform
+                                                        .huddle01,
+                                                  ),
+                                                ],
+                                                title: "How you wanna sync?",
+                                                onItemSelect: (time) {
+                                                  print(time);
+                                                  Navigator.pop(context);
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    );
                   },
                   onShareAvailability: () {
                     // TODO(someshubham): Add your Share callback
