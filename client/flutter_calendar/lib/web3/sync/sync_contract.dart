@@ -19,14 +19,12 @@ mixin SyncContract {
       DeployedContract(contractAbi, contractAddress);
 
   static Future<void> fetchSchedules(String address) async {
-    final getScheduleEvent = deployedContract.function('getSchedule');
+    final getScheduleEvent = deployedContract.function('getSchedules');
     final result = await Web3ClientDart.client.call(
       contract: deployedContract,
       function: getScheduleEvent,
       params: [EthereumAddress.fromHex(address)],
     );
-
-    print(result);
   }
 
   static Future<String?> scheduleMeeting({
