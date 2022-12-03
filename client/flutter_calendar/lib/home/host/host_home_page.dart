@@ -4,6 +4,7 @@ import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/data/meeting_platform.dart';
 import 'package:flutter_calendar/data/models/schedule_model.dart';
 import 'package:flutter_calendar/data/sync_raw_data.dart';
+import 'package:flutter_calendar/home/share_helper.dart';
 import 'package:flutter_calendar/home/update_name_page.dart';
 import 'package:flutter_calendar/home/widgets/availability_widget.dart';
 import 'package:flutter_calendar/home/widgets/upcoming_widget.dart';
@@ -24,7 +25,8 @@ class HostHomePage extends StatefulWidget {
   State<HostHomePage> createState() => _HostHomePageState();
 }
 
-class _HostHomePageState extends State<HostHomePage> with SyncContract {
+class _HostHomePageState extends State<HostHomePage>
+    with SyncContract, ShareHelper {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -306,6 +308,7 @@ class _HostHomePageState extends State<HostHomePage> with SyncContract {
                         },
                         onShareAvailability: () {
                           // TODO(someshubham): Add your Share callback
+                          callShare(key.address.hex, snapshot.data!);
                         },
                       );
                     }),

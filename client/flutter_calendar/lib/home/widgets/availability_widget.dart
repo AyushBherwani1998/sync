@@ -77,6 +77,7 @@ class AvailabilityWidget extends StatelessWidget {
                     label: "Share",
                     onTap: () {
                       // TODO(someshubham): Add Share Functionality
+                      onShareAvailability.call();
                     },
                   ),
                 ].column(),

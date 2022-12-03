@@ -52,6 +52,7 @@ dependencies:
   path_provider: ^2.0.11
   provider: ^6.0.4
   random_avatar: ^0.0.7
+  share_plus: ^6.3.0
   shimmer: ^2.0.0
   syncfusion_flutter_calendar: ^20.3.59
   uni_links: ^0.5.1
