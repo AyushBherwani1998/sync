@@ -9,6 +9,7 @@ import 'package:flutter_calendar/home/widgets/availability_widget.dart';
 import 'package:flutter_calendar/home/widgets/upcoming_widget.dart';
 import 'package:flutter_calendar/home/widgets/user_detail_widget.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
+import 'package:flutter_calendar/web3/sync/models/schedules.dart';
 import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
 import 'package:flutter_calendar/web3/sync/sync_contract.dart';
 import 'package:flutter_calendar/widgets/item_list.dart';
@@ -105,69 +106,87 @@ class _HostHomePageState extends State<HostHomePage> with SyncContract {
                   },
                 ),
                 16.heightBox,
-                UpcomingWidget(
-                  viewAllTap: () {
-                    // Navigate to view all page
-                  },
-                  onUpcomingTap: () {
-                    //
-                    showCupertinoModalPopup(
-                      context: context,
-                      builder: (BuildContext context) => CupertinoActionSheet(
-                        //itle: const Text('Choose Options'),
-                        //message: const Text('Your options are '),
-                        actions: <Widget>[
-                          CupertinoActionSheetAction(
-                            child: const Text('Join Huddle01'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              // TODO(someshubham): Open Huddle Link
-                            },
+                FutureBuilder<MeetingSchedules?>(
+                    future: SyncContract.fetchSchedules(key.address.hex),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return UpcomingWidget(
+                          viewAllTap: () {},
+                          onUpcomingTap: () {},
+                          meetingSchedules: MeetingSchedules(
+                            [
+                              Schedule(
+                                title: "---------------",
+                                description: "--------------",
+                                startTime: DateTime.now(),
+                                endTime: DateTime.now(),
+                                host: "---------------",
+                                quest: "--------------",
+                                isCancelled: false,
+                              ),
+                            ],
                           ),
-                          CupertinoActionSheetAction(
-                            child: const Text('Chat with 0x123...4df3'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              // TODO(someshubham): Chat with Host
-                            },
-                          ),
-                          CupertinoActionSheetAction(
-                            child: const Text(
-                              'Cancel Meeting',
-                              style: TextStyle(
-                                color: Colors.red,
+                        ).shimmer();
+                      }
+                      return UpcomingWidget(
+                        viewAllTap: () {
+                          // Navigate to view all page
+                        },
+                        onUpcomingTap: () {
+                          //
+                          showCupertinoModalPopup(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                CupertinoActionSheet(
+                              //itle: const Text('Choose Options'),
+                              //message: const Text('Your options are '),
+                              actions: <Widget>[
+                                CupertinoActionSheetAction(
+                                  child: const Text('Join Huddle01'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    // TODO(someshubham): Open Huddle Link
+                                  },
+                                ),
+                                CupertinoActionSheetAction(
+                                  child: const Text('Chat with 0x123...4df3'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    // TODO(someshubham): Chat with Host
+                                  },
+                                ),
+                                CupertinoActionSheetAction(
+                                  child: const Text(
+                                    'Cancel Meeting',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    // TODO(someshubham): Cancel Meeting
+                                  },
+                                )
+                              ],
+                              cancelButton: CupertinoActionSheetAction(
+                                isDefaultAction: true,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              // TODO(someshubham): Cancel Meeting
-                            },
-                          )
-                        ],
-                        cancelButton: CupertinoActionSheetAction(
-                          isDefaultAction: true,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  scheduleModel: ScheduleModel(
-                    address: "0x9878978926",
-                    guests: const ["0x2514654"],
-                    title: "Ayush <> EthFinalist",
-                    description: "7th May   •   9:30 PM   •   30mins",
-                    startTime: DateTime.now(),
-                    endTime: DateTime.now(),
-                  ),
-                ),
+                          );
+                        },
+                        meetingSchedules:
+                            snapshot.hasData ? snapshot.data : null,
+                      );
+                    }),
                 10.heightBox,
                 FutureBuilder<SyncEvent?>(
                     future: SyncContract.fetchEvent(key.address.hex),

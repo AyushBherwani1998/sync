@@ -27,7 +27,6 @@ class AvailabilityWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         "Your availability".text.size(26).semiBold.make().p12(),
-        16.heightBox,
         (isAlreadyAvailable)
             ? GestureDetector(
                 onTap: onShareAvailability,
