@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_calendar/config/images.dart';
-import 'package:flutter_calendar/config/sync_colors.dart';
 import 'package:flutter_calendar/constants.dart';
+import 'package:flutter_calendar/data/models/schedule_model.dart';
 import 'package:flutter_calendar/home/widgets/availability_widget.dart';
+import 'package:flutter_calendar/home/widgets/upcoming_widget.dart';
 import 'package:flutter_calendar/home/widgets/user_detail_widget.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:web3dart/web3dart.dart';
@@ -46,6 +45,23 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
                 16.heightBox,
+                UpcomingWidget(
+                  viewAllTap: () {
+                    // Navigate to view all page
+                  },
+                  onUpcomingTap: () {
+                    // Navigate to upcoming tap
+                  },
+                  scheduleModel: ScheduleModel(
+                    address: "0x9878978926",
+                    guests: const ["0x2514654"],
+                    title: "Ayush <> EthFinalist",
+                    description: "7th May   •   9:30 PM   •   30mins",
+                    startTime: DateTime.now(),
+                    endTime: DateTime.now(),
+                  ),
+                ),
+                10.heightBox,
                 AvailabilityWidget(
                   onTap: () {
                     // TODO(someshubham): Add your availability callback
