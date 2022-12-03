@@ -1,16 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/constants.dart';
+import 'package:flutter_calendar/data/meeting_platform.dart';
 import 'package:flutter_calendar/data/models/schedule_model.dart';
 import 'package:flutter_calendar/data/sync_raw_data.dart';
+import 'package:flutter_calendar/home/share_helper.dart';
 import 'package:flutter_calendar/home/update_name_page.dart';
 import 'package:flutter_calendar/home/widgets/availability_widget.dart';
 import 'package:flutter_calendar/home/widgets/upcoming_widget.dart';
 import 'package:flutter_calendar/home/widgets/user_detail_widget.dart';
 import 'package:flutter_calendar/utils/crypto_utils.dart';
+import 'package:flutter_calendar/web3/sync/models/schedules.dart';
 import 'package:flutter_calendar/wallet/screen/wallet_init_screen.dart';
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
+import 'package:flutter_calendar/web3/sync/sync_contract.dart';
 import 'package:flutter_calendar/widgets/item_list.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -23,7 +27,8 @@ class HostHomePage extends StatefulWidget {
   State<HostHomePage> createState() => _HostHomePageState();
 }
 
-class _HostHomePageState extends State<HostHomePage> {
+class _HostHomePageState extends State<HostHomePage>
+    with SyncContract, ShareHelper {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,121 +113,210 @@ class _HostHomePageState extends State<HostHomePage> {
                   },
                 ),
                 16.heightBox,
-                UpcomingWidget(
-                  viewAllTap: () {
-                    // Navigate to view all page
-                  },
-                  onUpcomingTap: () {
-                    //
-                    showCupertinoModalPopup(
-                      context: context,
-                      builder: (BuildContext context) => CupertinoActionSheet(
-                        //itle: const Text('Choose Options'),
-                        //message: const Text('Your options are '),
-                        actions: <Widget>[
-                          CupertinoActionSheetAction(
-                            child: const Text('Join Huddle01'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              // TODO(someshubham): Open Huddle Link
-                            },
-                          ),
-                          CupertinoActionSheetAction(
-                            child: const Text('Chat with 0x123...4df3'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              // TODO(someshubham): Chat with Host
-                            },
-                          ),
-                          CupertinoActionSheetAction(
-                            child: const Text(
-                              'Cancel Meeting',
-                              style: TextStyle(
-                                color: Colors.red,
+                FutureBuilder<MeetingSchedules?>(
+                    future: SyncContract.fetchSchedules(key.address.hex),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return UpcomingWidget(
+                          viewAllTap: () {},
+                          onUpcomingTap: () {},
+                          meetingSchedules: MeetingSchedules(
+                            [
+                              Schedule(
+                                title: "---------------",
+                                description: "--------------",
+                                startTime: DateTime.now(),
+                                endTime: DateTime.now(),
+                                host: "---------------",
+                                quest: "--------------",
+                                isCancelled: false,
                               ),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              // TODO(someshubham): Cancel Meeting
-                            },
-                          )
-                        ],
-                        cancelButton: CupertinoActionSheetAction(
-                          isDefaultAction: true,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                            ],
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                  scheduleModel: ScheduleModel(
-                    address: "0x9878978926",
-                    guests: const ["0x2514654"],
-                    title: "Ayush <> EthFinalist",
-                    description: "7th May   •   9:30 PM   •   30mins",
-                    startTime: DateTime.now(),
-                    endTime: DateTime.now(),
-                  ),
-                ),
-                10.heightBox,
-                AvailabilityWidget(
-                  isAlreadyAvailable: true,
-                  onAddAvailability: () {
-                    // TODO(someshubham): Add your availability callback
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return ItemList<String>(
-                            itemList: SyncRawData.availabilityList,
-                            title: "Select your availability",
-                            onItemSelect: (_) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return ItemList<int>(
-                                      itemList: SyncRawData.timingList,
-                                      title: "Choose sync duration",
-                                      onItemSelect: (time) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return ItemList<MeetingPlatform>(
-                                                itemList:
-                                                    SyncRawData.meetingList,
-                                                title: "How you wanna sync?",
-                                                onItemSelect: (time) {
-                                                  print(time);
-                                                  Navigator.pop(context);
-                                                },
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      },
-                                    );
+                        ).shimmer();
+                      }
+                      return UpcomingWidget(
+                        viewAllTap: () {
+                          // Navigate to view all page
+                        },
+                        onUpcomingTap: () {
+                          //
+                          showCupertinoModalPopup(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                CupertinoActionSheet(
+                              //itle: const Text('Choose Options'),
+                              //message: const Text('Your options are '),
+                              actions: <Widget>[
+                                CupertinoActionSheetAction(
+                                  child: const Text('Join Huddle01'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    // TODO(someshubham): Open Huddle Link
                                   },
                                 ),
-                              );
-                            },
+                                CupertinoActionSheetAction(
+                                  child: const Text('Chat with 0x123...4df3'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    // TODO(someshubham): Chat with Host
+                                  },
+                                ),
+                                CupertinoActionSheetAction(
+                                  child: const Text(
+                                    'Cancel Meeting',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    // TODO(someshubham): Cancel Meeting
+                                  },
+                                )
+                              ],
+                              cancelButton: CupertinoActionSheetAction(
+                                isDefaultAction: true,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
                           );
                         },
-                      ),
-                    );
-                  },
-                  onShareAvailability: () {
-                    // TODO(someshubham): Add your Share callback
-                  },
-                ),
+                        meetingSchedules:
+                            snapshot.hasData ? snapshot.data : null,
+                      );
+                    }),
+                10.heightBox,
+                FutureBuilder<SyncEvent?>(
+                    future: SyncContract.fetchEvent(key.address.hex),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return [
+                          "Your availability"
+                              .text
+                              .size(26)
+                              .semiBold
+                              .make()
+                              .p12(),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Colors.white.withOpacity(0.2),
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              color: const Color(0xff181818),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                "00.00 min"
+                                    .text
+                                    .size(28)
+                                    .bold
+                                    .make()
+                                    .shimmer()
+                                    .pOnly(
+                                      top: 20,
+                                      left: 16,
+                                    ),
+                                Row(
+                                  children: [
+                                    "All days in a week"
+                                        .text
+                                        .caption(context)
+                                        .size(20)
+                                        .make(),
+                                    const Spacer(),
+                                    const CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 12,
+                                    ),
+                                    8.widthBox,
+                                    "Meeting platform"
+                                        .text
+                                        .size(18)
+                                        .make()
+                                        .shimmer(),
+                                  ],
+                                ).p16(),
+                              ],
+                            ),
+                          ).p12()
+                        ].column(crossAlignment: CrossAxisAlignment.start);
+                      }
+
+                      return AvailabilityWidget(
+                        syncEvent: snapshot.hasData ? snapshot.data : null,
+                        isAlreadyAvailable: snapshot.hasData,
+                        onAddAvailability: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ItemList<String>(
+                                  itemList: SyncRawData.availabilityList,
+                                  title: "Select your availability",
+                                  onItemSelect: (_) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return ItemList<int>(
+                                            itemList: SyncRawData.timingList,
+                                            title: "Choose sync duration",
+                                            onItemSelect: (time) {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return ItemList<
+                                                        MeetingPlatform>(
+                                                      itemList: SyncRawData
+                                                          .meetingList,
+                                                      title:
+                                                          "How you wanna sync?",
+                                                      onItemSelect: (meeting) {
+                                                        if (time.data != null &&
+                                                            meeting.data !=
+                                                                null) {
+                                                          SyncContract.addEvent(
+                                                            time.data!,
+                                                            meeting.data!,
+                                                          );
+                                                        }
+
+                                                        Navigator.pop(context);
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        onShareAvailability: () {
+                          // TODO(someshubham): Add your Share callback
+                          callShare(key.address.hex, snapshot.data!);
+                        },
+                      );
+                    }),
               ],
             );
           }),

@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/sync_lottie.dart';
+import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/home/host/host_home_page.dart';
+import 'package:flutter_calendar/utils/crypto_utils.dart';
+import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class MeetingConfirmationPage extends StatefulWidget {
-  const MeetingConfirmationPage({Key? key}) : super(key: key);
+  final DateTime dateTime;
+  final SyncEvent event;
+  final String title;
+
+  const MeetingConfirmationPage({
+    Key? key,
+    required this.dateTime,
+    required this.event,
+    required this.title,
+  }) : super(key: key);
 
   @override
   State<MeetingConfirmationPage> createState() =>
@@ -14,6 +28,15 @@ class MeetingConfirmationPage extends StatefulWidget {
 }
 
 class _MeetingConfirmationPageState extends State<MeetingConfirmationPage> {
+  late String hostAddress;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    hostAddress =
+        Hive.box(SyncConstant.hostAddressBox).get(SyncConstant.hostAddressKey);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,13 +64,8 @@ class _MeetingConfirmationPageState extends State<MeetingConfirmationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      "Ayush <> ETHFinalist"
-                          .text
-                          .semiBold
-                          .size(24)
-                          .make()
-                          .p12(),
-                      "with ayush.eth"
+                      widget.title.text.semiBold.size(24).make().p12(),
+                      "with ${hostAddress.toString().addressAbbreviation}"
                           .text
                           .caption(context)
                           .size(16)
@@ -57,7 +75,7 @@ class _MeetingConfirmationPageState extends State<MeetingConfirmationPage> {
                             top: 12,
                             bottom: 12,
                           ),
-                      "7th May   •   9:30 PM   •   30mins"
+                      "${DateFormat('MMMd').format(widget.dateTime)}   •   ${DateFormat('jm').format(widget.dateTime)}   •   ${widget.event.timeSlot}mins"
                           .text
                           .size(20)
                           .semiBold
@@ -81,6 +99,7 @@ class _MeetingConfirmationPageState extends State<MeetingConfirmationPage> {
             onTap: () {
               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                 builder: (context) {
+                  Hive.box(SyncConstant.hostAddressBox).clear();
                   return const HostHomePage();
                 },
               ), (route) => false);

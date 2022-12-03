@@ -1,10 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/config/sync_colors.dart';
+import 'package:flutter_calendar/constants.dart';
+import 'package:flutter_calendar/home/guest/guest_home_page.dart';
 import 'package:flutter_calendar/home/host/host_home_page.dart';
 import 'package:flutter_calendar/wallet/screen/import_private_key_screen.dart';
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class WalletInitScreen extends StatefulWidget {
@@ -15,6 +20,16 @@ class WalletInitScreen extends StatefulWidget {
 }
 
 class _WalletInitScreenState extends State<WalletInitScreen> {
+  String? hostAddress;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    hostAddress =
+        Hive.box(SyncConstant.hostAddressBox).get(SyncConstant.hostAddressKey);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +53,11 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return const HostHomePage();
+                  if (hostAddress == null) {
+                    return const HostHomePage();
+                  } else {
+                    return const GuestHomePage();
+                  }
                 }),
               );
             },

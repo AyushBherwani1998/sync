@@ -2,6 +2,9 @@ class SyncConstant {
   static const String privateKeyBox = "private_key_box";
   static const String privateKeyStorageKey = "private_key_storage";
 
+  static const String hostAddressBox = "host_address_box";
+  static const String hostAddressKey = "host_address_key";
+
   static const String userNameBox = "user_name_box";
   static const String userNameKey = "user_name_key";
   static const String iosAppendLink = "sync://address=";
