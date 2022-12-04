@@ -12,6 +12,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'app.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -83,15 +84,13 @@ class _SplashPageState extends State<SplashPage> {
       if (data?.isNotEmpty ?? false) {
         final isFirstTimeUser = WalletManager().isFirstTimeUser();
         if (isFirstTimeUser) {
-          Navigator.push(
-            context,
+          myAppNavigatorKey.currentState?.push(
             MaterialPageRoute(builder: (context) {
               return const WalletInitScreen();
             }),
           );
         } else {
-          Navigator.push(
-            context,
+          myAppNavigatorKey.currentState?.push(
             MaterialPageRoute(builder: (context) {
               return const GuestHomePage();
             }),

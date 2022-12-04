@@ -12,6 +12,8 @@ import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+final myAppNavigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -20,11 +22,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: myAppNavigatorKey,
       theme: SyncTheme.themeData,
       home: const SplashPage(),
       builder: BotToastInit(),

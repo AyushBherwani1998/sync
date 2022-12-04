@@ -9,6 +9,7 @@ import 'package:flutter_calendar/home/host/host_home_page.dart';
 import 'package:flutter_calendar/wallet/screen/import_private_key_screen.dart';
 import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
+import 'package:flutter_calendar/widgets/sync_toast.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
@@ -92,7 +93,9 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
             ),
             textColor: SyncColor.primaryColor,
             bgColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              SyncToast.showErrorToast(context, "Coming Soon");
+            },
           ),
           40.heightBox,
         ],

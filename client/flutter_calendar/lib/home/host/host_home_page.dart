@@ -19,6 +19,7 @@ import 'package:flutter_calendar/wallet/wallet_manager.dart';
 import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
 import 'package:flutter_calendar/web3/sync/sync_contract.dart';
 import 'package:flutter_calendar/widgets/item_list.dart';
+import 'package:flutter_calendar/widgets/sync_toast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:web3dart/web3dart.dart';
@@ -298,6 +299,17 @@ class _HostHomePageState extends State<HostHomePage>
                                                             time.data!,
                                                             meeting.data!,
                                                           );
+
+                                                          if (txHash
+                                                              .isEmptyOrNull) {
+                                                            SyncToast
+                                                                .showErrorToast(
+                                                              context,
+                                                              "Unable to create an event",
+                                                            );
+                                                            context.pop();
+                                                            return;
+                                                          }
 
                                                           // ignore: use_build_context_synchronously
                                                           context.nextPage(

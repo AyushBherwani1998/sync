@@ -6,6 +6,7 @@ import 'package:flutter_calendar/utils/crypto_utils.dart';
 import 'package:flutter_calendar/web3/sync/models/sync_event.dart';
 import 'package:flutter_calendar/web3/sync/sync_contract.dart';
 import 'package:flutter_calendar/widgets/sync_button.dart';
+import 'package:flutter_calendar/widgets/sync_toast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -134,6 +135,15 @@ class _MeetingCreationPageState extends State<MeetingCreationPage> {
                       .millisecondsSinceEpoch,
                   host: hostAddress,
                 );
+
+                if (hash.isEmptyOrNull) {
+                  SyncToast.showErrorToast(
+                    context,
+                    "Unable to schedule a meeting",
+                  );
+                  context.pop();
+                  return;
+                }
 
                 // ignore: use_build_context_synchronously
                 Navigator.push(

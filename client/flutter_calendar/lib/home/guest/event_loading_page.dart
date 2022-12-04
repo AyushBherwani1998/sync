@@ -45,7 +45,9 @@ class _MeetingLoadingPageState extends State<EventLoadingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       body: Lottie.asset(SyncLottie.loader, height: 200).centered(),
     );
   }

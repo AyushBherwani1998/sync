@@ -55,7 +55,9 @@ class _MeetingLoadingPageState extends State<MeetingLoadingPager> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       body: Column(
         children: [
           52.heightBox,
@@ -79,12 +81,7 @@ class _MeetingLoadingPageState extends State<MeetingLoadingPager> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      widget.title
-                          .text
-                          .semiBold
-                          .size(24)
-                          .make()
-                          .p12(),
+                      widget.title.text.semiBold.size(24).make().p12(),
                       "with ${hostAddress.toString().addressAbbreviation}"
                           .text
                           .caption(context)
