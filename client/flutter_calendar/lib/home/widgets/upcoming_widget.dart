@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/web3/sync/models/schedules.dart';
+import 'package:intl/intl.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class UpcomingWidget extends StatelessWidget {
@@ -67,7 +68,8 @@ class UpcomingWidget extends StatelessWidget {
                       ).p16(),
                       if (meetingSchedules!
                           .schedules.first.description.isNotEmptyAndNotNull)
-                        meetingSchedules!.schedules.first.description.text
+                        "${DateFormat('MMMd').format(meetingSchedules!.schedules.first.startTime)}   •   ${DateFormat('jm').format(meetingSchedules!.schedules.first.startTime)}"
+                            .text
                             .caption(context)
                             .size(16)
                             .make()
