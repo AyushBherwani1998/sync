@@ -4,7 +4,8 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:web3dart/web3dart.dart';
 
 mixin ENSResolver {
-  static final Ens ens = Ens(client: Web3ClientDart.client);
+  static final Ens ens = Ens(client: Web3ClientDart.ensClient);
+  
   static Future<String> resolveENS(String ensName) async {
     final EthereumAddress ethereumAddress =
         await ens.withName(ensName).getAddress();

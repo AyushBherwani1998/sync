@@ -6,7 +6,12 @@ import 'package:web3dart/web3dart.dart';
 
 mixin Web3ClientDart {
   static final client = Web3Client(
-    "https://goerli.infura.io/v3/36229aa90d54478bb93614edd05f06b0",
+    "https://rpc.ankr.com/polygon_mumbai",
+    Client(),
+  );
+
+  static final ensClient = Web3Client(
+    "https://mainnet.infura.io/v3/36229aa90d54478bb93614edd05f06b0",
     Client(),
   );
 
@@ -38,5 +43,4 @@ mixin Web3ClientDart {
       return await checkTxStatus(hash);
     }
   }
-
 }

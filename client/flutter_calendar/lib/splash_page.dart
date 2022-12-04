@@ -29,7 +29,7 @@ class _SplashPageState extends State<SplashPage> {
       setState(() => _opacity = 1);
       Future.delayed(const Duration(seconds: 2)).then(
         (_) async {
-          //listenForUri(context);
+          listenForUri(context);
           final isFirstTimeUser = WalletManager().isFirstTimeUser();
           final url = await checkForShareUri();
           //"sync://address=0xD41dccEe35a0aBb7914A6b6A468395BBAeBD2cB0";
