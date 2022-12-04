@@ -319,7 +319,10 @@ class _HostHomePageState extends State<HostHomePage>
                                                                   (context) {
                                                                 context
                                                                     .nextReplacementPage(
-                                                                  const EventConfirmationPage(),
+                                                                  EventConfirmationPage(
+                                                                    hash:
+                                                                        txHash,
+                                                                  ),
                                                                 );
                                                               },
                                                               onFailure:
@@ -357,6 +360,7 @@ class _HostHomePageState extends State<HostHomePage>
           }),
     );
   }
+
   Future<void> _launchUrl() async {
     Uri uri = Uri.parse("https://app.huddle01.com/tJIcKz");
     await launchUrl(uri);

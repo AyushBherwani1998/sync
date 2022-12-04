@@ -8,11 +8,14 @@ import 'package:flutter_calendar/widgets/sync_button.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class EventConfirmationPage extends StatefulWidget {
+  final String hash;
   const EventConfirmationPage({
     Key? key,
+    required this.hash,
   }) : super(key: key);
 
   @override
@@ -20,10 +23,8 @@ class EventConfirmationPage extends StatefulWidget {
 }
 
 class _EventConfirmationPageState extends State<EventConfirmationPage> {
-  late String hostAddress;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -32,10 +33,19 @@ class _EventConfirmationPageState extends State<EventConfirmationPage> {
     return Scaffold(
       appBar: AppBar(),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Spacer(),
           Lottie.asset(SyncLottie.done, height: 200),
           const Spacer(),
+          Row(
+            children: [
+              "View meeting on blockchain".text.semiBold.size(20).make().p16(),
+            ],
+          ).onTap(() {
+            _launchUrl(widget.hash);
+          }),
+          24.heightBox,
           SyncButton(
             label: "Go to home",
             onTap: () {
@@ -51,5 +61,10 @@ class _EventConfirmationPageState extends State<EventConfirmationPage> {
         ],
       ),
     );
+  }
+
+  Future<void> _launchUrl(String hash) async {
+    Uri uri = Uri.parse("https://mumbai.polygonscan.com/tx/$hash");
+    await launchUrl(uri);
   }
 }
