@@ -4,6 +4,9 @@ import 'package:flutter_calendar/constants.dart';
 import 'package:flutter_calendar/data/meeting_platform.dart';
 import 'package:flutter_calendar/data/models/schedule_model.dart';
 import 'package:flutter_calendar/data/sync_raw_data.dart';
+import 'package:flutter_calendar/home/guest/event_confirmation_page.dart';
+import 'package:flutter_calendar/home/guest/event_loading_page.dart';
+import 'package:flutter_calendar/home/guest/meeting_loading_page.dart';
 import 'package:flutter_calendar/home/share_helper.dart';
 import 'package:flutter_calendar/home/update_name_page.dart';
 import 'package:flutter_calendar/home/widgets/availability_widget.dart';
@@ -284,17 +287,36 @@ class _HostHomePageState extends State<HostHomePage>
                                                           .meetingList,
                                                       title:
                                                           "How you wanna sync?",
-                                                      onItemSelect: (meeting) {
+                                                      onItemSelect:
+                                                          (meeting) async {
                                                         if (time.data != null &&
                                                             meeting.data !=
                                                                 null) {
-                                                          SyncContract.addEvent(
+                                                          final txHash =
+                                                              await SyncContract
+                                                                  .addEvent(
                                                             time.data!,
                                                             meeting.data!,
                                                           );
-                                                        }
 
-                                                        Navigator.pop(context);
+                                                          // ignore: use_build_context_synchronously
+                                                          context.nextPage(
+                                                            EventLoadingPage(
+                                                              onSuccess:
+                                                                  (context) {
+                                                                context
+                                                                    .nextReplacementPage(
+                                                                  const EventConfirmationPage(),
+                                                                );
+                                                              },
+                                                              onFailure:
+                                                                  (context) {
+                                                                context.pop();
+                                                              },
+                                                              hash: txHash!,
+                                                            ),
+                                                          );
+                                                        }
                                                       },
                                                     );
                                                   },
