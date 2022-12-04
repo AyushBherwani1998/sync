@@ -8,18 +8,21 @@ import 'package:flutter_calendar/widgets/sync_button.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class MeetingConfirmationPage extends StatefulWidget {
   final DateTime dateTime;
   final SyncEvent event;
   final String title;
+  final String hash;
 
   const MeetingConfirmationPage({
     Key? key,
     required this.dateTime,
     required this.event,
     required this.title,
+    required this.hash
   }) : super(key: key);
 
   @override
@@ -92,7 +95,9 @@ class _MeetingConfirmationPageState extends State<MeetingConfirmationPage> {
             children: [
               "View meeting on blockchain".text.semiBold.size(20).make().p16(),
             ],
-          ),
+          ).onTap(() {
+            _launchUrl(widget.hash);
+          }),
           const Spacer(),
           SyncButton(
             label: "Go to home",
@@ -109,5 +114,10 @@ class _MeetingConfirmationPageState extends State<MeetingConfirmationPage> {
         ],
       ),
     );
+  }
+
+  Future<void> _launchUrl(String hash) async {
+    Uri uri = Uri.parse("https://mumbai.polygonscan.com/tx/$hash");
+    await launchUrl(uri);
   }
 }

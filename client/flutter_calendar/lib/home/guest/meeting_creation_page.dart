@@ -163,6 +163,7 @@ class _MeetingCreationPageState extends State<MeetingCreationPage> {
                                 dateTime: widget.dateTime,
                                 event: widget.event,
                                 title: nameController.text,
+                                hash: hash,
                               );
                             },
                           ),
