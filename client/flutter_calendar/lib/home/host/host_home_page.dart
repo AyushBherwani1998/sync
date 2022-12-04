@@ -21,6 +21,7 @@ import 'package:flutter_calendar/web3/sync/sync_contract.dart';
 import 'package:flutter_calendar/widgets/item_list.dart';
 import 'package:flutter_calendar/widgets/sync_toast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -155,8 +156,8 @@ class _HostHomePageState extends State<HostHomePage>
                                 CupertinoActionSheetAction(
                                   child: const Text('Join Huddle01'),
                                   onPressed: () {
+                                    _launchUrl();
                                     Navigator.pop(context);
-                                    // TODO(someshubham): Open Huddle Link
                                   },
                                 ),
                                 CupertinoActionSheetAction(
@@ -355,5 +356,9 @@ class _HostHomePageState extends State<HostHomePage>
             );
           }),
     );
+  }
+  Future<void> _launchUrl() async {
+    Uri uri = Uri.parse("https://app.huddle01.com/tJIcKz");
+    await launchUrl(uri);
   }
 }
