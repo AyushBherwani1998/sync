@@ -13,7 +13,7 @@ mixin SyncContract {
   static String get jsonData => jsonEncode(abiMap);
 
   static EthereumAddress get contractAddress =>
-      EthereumAddress.fromHex('0x6c3699b552d23caa49a561321de9cb74a8a87491');
+      EthereumAddress.fromHex('0x6c3699B552D23CAA49a561321DE9Cb74a8A87491');
 
   static ContractAbi get contractAbi => ContractAbi.fromJson(jsonData, 'Sync');
 
@@ -114,7 +114,7 @@ mixin SyncContract {
           function: function,
           parameters: params,
         ),
-        chainId: 5,
+        chainId: 80001,
       );
       return hash;
     } catch (e) {

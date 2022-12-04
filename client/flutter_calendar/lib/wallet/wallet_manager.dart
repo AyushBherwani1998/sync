@@ -31,7 +31,8 @@ class WalletManager {
   Future<bool> removeAccount() async {
     final box = Hive.box(SyncConstant.privateKeyBox);
     final isCleared = await box.clear();
-    return isCleared == 0;
+    final isNameRemoved = await Hive.box(SyncConstant.userNameBox).clear();
+    return isCleared == 0 && isNameRemoved == 0;
   }
 
   String getUserAddress() {
